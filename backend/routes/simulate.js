@@ -34,6 +34,7 @@ router.post("/", async (req, res) => {
       goal: session.dealContext.goal,
       walkaway: session.dealContext.walkaway,
       playbook_summary: session.playbookSummary,
+      extracted_data: session.extractedData, // Added for document intelligence
     });
 
     let simulation;
@@ -42,7 +43,6 @@ router.post("/", async (req, res) => {
       simulation = parseGeminiJSON(raw);
     } catch (apiErr) {
       console.error("Gemini API or parse error:", apiErr.message);
-      console.error("Simulate parse error:", parseErr.message);
       // Return fallback simulation paths
       simulation = {
         paths: [
@@ -50,6 +50,7 @@ router.post("/", async (req, res) => {
             strategy: "conservative",
             label: "Play it safe",
             description: "Take a cautious approach, accepting terms close to their initial offer while protecting your walkaway point.",
+            predicted_price: "Current Market Target",
             expected_outcome: "You'll likely reach an agreement safely but leave value on the table.",
             probability_of_success: 75,
             risk_level: "low",
@@ -59,6 +60,7 @@ router.post("/", async (req, res) => {
             strategy: "balanced",
             label: "Balanced push",
             description: "Push back moderately on key terms while showing flexibility on secondary items.",
+            predicted_price: "Optimal Objective",
             expected_outcome: "A fair deal that meets most of your core objectives.",
             probability_of_success: 55,
             risk_level: "medium",
@@ -68,6 +70,7 @@ router.post("/", async (req, res) => {
             strategy: "aggressive",
             label: "High-risk high-reward",
             description: "Make ambitious demands and hold firm. Use competitive pressure and alternative offers as leverage.",
+            predicted_price: "Premium Upside",
             expected_outcome: "Either a very favorable deal or a breakdown in negotiations.",
             probability_of_success: 30,
             risk_level: "high",

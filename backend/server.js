@@ -41,6 +41,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/setup", require("./routes/setup"));
 app.use("/api/report", require("./routes/report"));
 app.use("/api/simulate", require("./routes/simulate"));
+app.use("/api/upload", require("./routes/upload"));
 
 // Socket.io connection handler
 io.on("connection", (socket) => {

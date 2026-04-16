@@ -17,6 +17,7 @@ function reduceContext(session, maxTurns = 7) {
     goal: session.dealContext.goal,
     walkaway: session.dealContext.walkaway,
     playbook_summary: session.playbookSummary,
+    extractedData: session.extractedData, // Added for document intelligence
     turns: recentTurns,
   };
 }

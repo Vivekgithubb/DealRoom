@@ -20,6 +20,7 @@ const useSessionStore = create((set, get) => ({
   whispers: [],
   powerScore: 0,
   currentWhisper: null,
+  extractedData: null, // Structured document intelligence
 
   // Phase management
   phase: "setup", // "setup" | "live" | "report"
@@ -62,6 +63,8 @@ const useSessionStore = create((set, get) => ({
       powerScore: s.powerScore + (whisper.power_delta || 0),
     })),
 
+  setExtractedData: (data) => set({ extractedData: data }),
+
   setReport: (report) => set({ report }),
   setSimulation: (simulation) => set({ simulation }),
   setBehaviorMode: (mode) => set({ behaviorMode: mode }),
@@ -84,6 +87,7 @@ const useSessionStore = create((set, get) => ({
       whispers: [],
       powerScore: 0,
       currentWhisper: null,
+      extractedData: null,
       phase: "setup",
       report: null,
       simulation: null,

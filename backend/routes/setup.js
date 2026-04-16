@@ -17,6 +17,7 @@ const {
   createSession,
   getSession,
   updateSession,
+  ensureSession,
 } = require("../utils/sessionStore");
 
 router.post("/", async (req, res) => {
@@ -24,25 +25,34 @@ router.post("/", async (req, res) => {
     const { deal_type, goal, walkaway, counterparty_context, session_id } =
       req.body;
 
-    if (!deal_type || !goal || !walkaway || !session_id) {
+    // Relaxed validation: Allow if we have EITHER the form fields OR extracted document data
+    const session = ensureSession(session_id);
+    const hasFormData = deal_type && goal && walkaway;
+    const hasExtractedData = session.extractedData && Object.keys(session.extractedData).length > 0;
+
+    if (!hasFormData && !hasExtractedData) {
       return res.status(400).json({
-        error: "Missing required fields: deal_type, goal, walkaway, session_id",
+        error: "Missing parameters: Please provide negotiation details or upload a document.",
       });
     }
 
-    const dealContext = { deal_type, goal, walkaway, counterparty_context };
+    const dealContext = { 
+      deal_type: deal_type || "Document-Led Negotiation", 
+      goal: goal || "See extracted document intelligence", 
+      walkaway: walkaway || "Protect extracted baseline", 
+      counterparty_context 
+    };
 
     // Create or update session
-    let session = getSession(session_id);
-    if (session) {
+    if (session.dealContext.deal_type !== "Unknown") {
       updateSession(session_id, { dealContext, transcript: [], whispers: [] });
-      session = getSession(session_id, dealContext);
     } else {
-      session = createSession(session_id, dealContext);
+      updateSession(session_id, { dealContext });
     }
+    const finalSession = getSession(session_id);
 
     // Build prompt and call Gemini (Agent 1)
-    const prompt = buildSetupPrompt(dealContext);
+    const prompt = buildSetupPrompt({ ...dealContext, extracted_data: session.extractedData });
     let playbook;
     try {
       const raw = await callGemini(prompt, 500);

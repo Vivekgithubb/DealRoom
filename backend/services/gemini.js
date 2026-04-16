@@ -202,7 +202,7 @@ function initGemini() {
   groqApiKey = process.env.GROQ_API_KEY;
 }
 
-async function callGemini(prompt, maxTokens = 1000) {
+async function callGemini(prompt, maxTokens = 1000, modelOverride = null) {
   if (!groqApiKey) {
     initGemini();
   }
@@ -210,6 +210,8 @@ async function callGemini(prompt, maxTokens = 1000) {
   if (!groqApiKey) {
     throw new Error("Groq API Key not initialized. Check GROQ_API_KEY.");
   }
+
+  const modelToUse = modelOverride || "llama-3.3-70b-versatile";
 
   try {
     const response = await fetch(
@@ -221,7 +223,7 @@ async function callGemini(prompt, maxTokens = 1000) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile", // Fast, accurate model on Groq
+          model: modelToUse,
           messages: [
             {
               role: "system",
@@ -242,13 +244,21 @@ async function callGemini(prompt, maxTokens = 1000) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Groq API error: ${response.status} - ${errorText}`);
+      console.error(`[Groq Error] Status: ${response.status} | Model: ${modelToUse} | Body: ${errorText}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const res = await response.json();
     return res.choices[0].message.content;
   } catch (err) {
-    console.error("Groq fetch error:", err.message);
+    console.error(`[Groq Fetch Error] ${err.message}`);
+    
+    // Automatic fallback logic for stability
+    if (!modelOverride && !err.message.includes("401")) { 
+       const fallbackModel = "llama-3.1-70b-versatile";
+       console.warn(`[Groq] Falling back to ${fallbackModel}...`);
+       return callGemini(prompt, maxTokens, fallbackModel);
+    }
     throw err;
   }
 }

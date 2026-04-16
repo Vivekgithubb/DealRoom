@@ -1,7 +1,9 @@
 import { useState } from "react";
 import apiClient from "../utils/apiClient";
 import useSessionStore from "../store/sessionStore";
-import { ChevronDown, Shield, Lock, Terminal } from "lucide-react";
+import { ChevronDown, Shield, Lock, Terminal, Brain } from "lucide-react";
+import FileUpload from "./FileUpload";
+import ExtractedDataPreview from "./ExtractedDataPreview";
 import "./SetupScreenStyles.css";
 
 export default function SetupScreen() {
@@ -48,8 +50,11 @@ export default function SetupScreen() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.deal_type || !formData.goal || !formData.walkaway) {
-      setError("PLEASE FILL IN ALL REQUIRED PARAMETERS.");
+    const hasFormData = formData.deal_type && formData.goal && formData.walkaway;
+    const hasExtractedData = useSessionStore.getState().extractedData;
+
+    if (!hasFormData && !hasExtractedData) {
+      setError("PLEASE PROVIDE MISSION PARAMETERS OR UPLOAD A NEGOTIATION DOCUMENT.");
       return;
     }
 
@@ -116,7 +121,6 @@ export default function SetupScreen() {
                     placeholder="E.G. Q4 CLOUD INFRASTRUCTURE RE..."
                     value={formData.deal_type}
                     onChange={handleChange}
-                    required
                   />
                 </div>
 
@@ -132,6 +136,11 @@ export default function SetupScreen() {
                 </div>
 
                 <div className="form-field full">
+                  <FileUpload />
+                  <ExtractedDataPreview />
+                </div>
+
+                <div className="form-field full">
                   <label className="tactical-label">PRIMARY GOALS & LEVERAGE</label>
                   <textarea
                     name="goal"
@@ -139,7 +148,6 @@ export default function SetupScreen() {
                     placeholder="LIST KEY OBJECTIVES, MAXIMUM BUDGET, AND CRITICAL DEAL-BREAKERS..."
                     value={formData.goal}
                     onChange={handleChange}
-                    required
                     style={{ minHeight: '80px' }}
                   />
                 </div>
@@ -152,7 +160,6 @@ export default function SetupScreen() {
                     placeholder="ENTER YOUR MINIMUM ACCEPTABLE OUTCOME..."
                     value={formData.walkaway}
                     onChange={handleChange}
-                    required
                     style={{ minHeight: '80px' }}
                   />
                 </div>
@@ -304,13 +311,22 @@ function SimulatorInline({ simulation, selectedMode, onSelectMode }) {
               <div className="sim-path-label">{path.label}</div>
               <p className="sim-path-desc">{path.description}</p>
 
-              <div className="sim-stat-row">
+               <div className="sim-stat-row">
                 <span className="sim-stat-label">SUCCESS PROBABILITY</span>
                 <span className="sim-stat-value" style={{ color: riskColors[path.risk_level] }}>
                   {path.probability_of_success}%
                 </span>
               </div>
               
+              {path.predicted_price && (
+                <div className="sim-stat-row" style={{ marginTop: '10px', borderTop: '1px solid #1A1A1A', paddingTop: '10px' }}>
+                  <span className="sim-stat-label">PREDICTED_SETTLEMENT</span>
+                  <span className="sim-stat-value" style={{ color: '#FFFFFF', fontSize: '14px' }}>
+                    {path.predicted_price}
+                  </span>
+                </div>
+              )}
+
               <div className="sim-stat-bar">
                 <div 
                   className="sim-stat-fill" 

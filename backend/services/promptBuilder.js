@@ -24,13 +24,16 @@ function formatTurns(turns) {
  * Agent 1 — Strategist
  * Runs once at session start. Builds the playbook.
  */
-function buildSetupPrompt({ deal_type, goal, walkaway, counterparty_context }) {
+function buildSetupPrompt({ deal_type, goal, walkaway, counterparty_context, extracted_data }) {
   return `You are a negotiation strategist. Analyze this deal and create a concise playbook.
 
 Deal type: ${deal_type}
 User's goal: ${goal}
 Walkaway point: ${walkaway}
 Counterparty context: ${counterparty_context || "No specific context provided."}
+
+${extracted_data ? `Additional structured data from uploaded documents:
+${JSON.stringify(extracted_data, null, 2)}` : ""}
 
 Return ONLY a JSON object with this exact structure:
 {
@@ -105,6 +108,7 @@ Context:
 - User's goal: ${context.goal}
 - Walkaway point: ${context.walkaway}
 - Strategy: ${context.playbook_summary}
+${context.extractedData ? `- Relevant structured data from documents: ${JSON.stringify(context.extractedData)}` : ""}
 
 Recent conversation:
 ${turnsFormatted}
@@ -190,13 +194,16 @@ Return only JSON. No preamble. No markdown fences.`;
  * Agent 4 — Simulator
  * Runs on demand. Simulates three negotiation paths.
  */
-function buildSimulatePrompt({ deal_type, goal, walkaway, playbook_summary }) {
+function buildSimulatePrompt({ deal_type, goal, walkaway, playbook_summary, extracted_data }) {
   return `You are a negotiation outcome predictor. Given this deal context, simulate three negotiation paths.
 
 Deal type: ${deal_type}
 Goal: ${goal}
 Walkaway: ${walkaway}
 Playbook: ${playbook_summary || "No playbook generated yet."}
+
+${extracted_data ? `Structured data from uploaded documents:
+${JSON.stringify(extracted_data, null, 2)}` : ""}
 
 Return ONLY a JSON object:
 {
@@ -205,6 +212,7 @@ Return ONLY a JSON object:
       "strategy": "conservative",
       "label": "Play it safe",
       "description": "2 sentences on this approach.",
+      "predicted_price": "One specific target number or value (e.g. $105,000)",
       "expected_outcome": "Specific predicted outcome.",
       "probability_of_success": 72,
       "risk_level": "low",
@@ -214,6 +222,7 @@ Return ONLY a JSON object:
       "strategy": "balanced",
       "label": "Balanced push",
       "description": "2 sentences on this approach.",
+      "predicted_price": "One specific target number or value (e.g. $112,000)",
       "expected_outcome": "Specific predicted outcome.",
       "probability_of_success": 58,
       "risk_level": "medium",
@@ -223,6 +232,7 @@ Return ONLY a JSON object:
       "strategy": "aggressive",
       "label": "High-risk high-reward",
       "description": "2 sentences on this approach.",
+      "predicted_price": "One ambitious target number or value (e.g. $125,000)",
       "expected_outcome": "Specific predicted outcome.",
       "probability_of_success": 31,
       "risk_level": "high",

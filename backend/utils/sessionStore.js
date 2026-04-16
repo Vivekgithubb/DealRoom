@@ -12,6 +12,7 @@ function createSession(id, dealContext) {
     playbookSummary: "",
     transcript: [],
     whispers: [],
+    extractedData: {}, // Structured info from uploaded docs
   });
   return sessions.get(id);
 }
@@ -20,11 +21,24 @@ function getSession(id) {
   return sessions.get(id) || null;
 }
 
-function updateSession(id, updates) {
-  const s = sessions.get(id);
-  if (s) {
-    Object.assign(s, updates);
+function ensureSession(id) {
+  let s = sessions.get(id);
+  if (!s) {
+    s = {
+      dealContext: { deal_type: "Unknown", goal: "", walkaway: "" },
+      playbookSummary: "",
+      transcript: [],
+      whispers: [],
+      extractedData: {},
+    };
+    sessions.set(id, s);
   }
+  return s;
+}
+
+function updateSession(id, updates) {
+  const s = ensureSession(id);
+  Object.assign(s, updates);
 }
 
 function deleteSession(id) {
@@ -35,4 +49,4 @@ function getAllSessions() {
   return sessions;
 }
 
-module.exports = { createSession, getSession, updateSession, deleteSession, getAllSessions };
+module.exports = { createSession, getSession, updateSession, deleteSession, getAllSessions, ensureSession };
