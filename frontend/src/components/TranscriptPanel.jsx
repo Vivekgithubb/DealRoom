@@ -5,7 +5,6 @@ export default function TranscriptPanel() {
   const transcript = useSessionStore((s) => s.transcript);
   const scrollRef = useRef(null);
 
-  // Auto-scroll to latest turn
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -18,40 +17,113 @@ export default function TranscriptPanel() {
   };
 
   return (
-    <div className="transcript-panel card">
-      <div className="transcript-header">
-        <h3 className="card-title">💬 Transcript</h3>
-        <span className="text-sm text-muted">
-          {transcript.length} {transcript.length === 1 ? "turn" : "turns"}
-        </span>
-      </div>
-
+    <div className="tactical-transcript-container">
       <div className="transcript-scroll" ref={scrollRef}>
         {transcript.length === 0 ? (
-          <div className="transcript-empty">
-            <div className="transcript-empty-icon">🎙️</div>
-            <p>Start speaking or type below to begin the transcript.</p>
-            <p className="text-sm text-muted" style={{ marginTop: "8px" }}>
-              Assign each statement as "Me" or "Them"
-            </p>
+          <div className="transcript-empty-tactical">
+            <div className="empty-line">_ NO_ACTIVE_FEED_DETECTED</div>
+            <div className="empty-line">_ INITIALIZE_TRANSMISSION_TO_START_LOGGING</div>
           </div>
         ) : (
           transcript.map((turn, i) => (
-            <div key={i} className="transcript-turn">
-              <div className={`turn-avatar ${turn.speaker}`}>
-                {turn.speaker === "me" ? "ME" : "TH"}
+            <div key={i} className={`tactical-turn ${turn.speaker === 'me' ? 'turn-me' : 'turn-them'}`}>
+              <div className="turn-metadata">
+                <span className="turn-timestamp">[{formatTime(turn.timestamp)}]</span>
+                <span className="turn-speaker-label">
+                    {turn.speaker === 'me' ? 'OP_CMD' : 'HOSTILE_INTEL'}
+                </span>
               </div>
-              <div className="turn-content">
-                <div className={`turn-speaker ${turn.speaker}`}>
-                  {turn.speaker === "me" ? "You" : "Them"}
-                </div>
-                <div className="turn-text">{turn.text}</div>
-                <div className="turn-time">{formatTime(turn.timestamp)}</div>
+              <div className="turn-content-tactical">
+                {turn.text}
               </div>
             </div>
           ))
         )}
       </div>
+
+      <style>{`
+        .tactical-transcript-container {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          background: #000000;
+          padding: 10px;
+        }
+
+        .transcript-scroll {
+          flex: 1;
+          overflow-y: auto;
+          padding-right: 10px;
+        }
+
+        .transcript-empty-tactical {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          color: #222222;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px;
+          margin-top: 20px;
+        }
+
+        .empty-line {
+          animation: terminal-blink 2s infinite;
+        }
+
+        .tactical-turn {
+          margin-bottom: 20px;
+          padding: 12px;
+          border-left: 2px solid transparent;
+          font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .turn-me {
+          border-left-color: #333333;
+          background: #111111;
+        }
+
+        .turn-them {
+          border-left-color: #ff4545;
+          background: rgba(255, 69, 69, 0.03);
+        }
+
+        .turn-metadata {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 6px;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 10px;
+          font-weight: 700;
+        }
+
+        .turn-timestamp {
+          color: #444444;
+        }
+
+        .turn-speaker-label {
+          letter-spacing: 0.1em;
+        }
+
+        .turn-me .turn-speaker-label {
+          color: #888888;
+        }
+
+        .turn-them .turn-speaker-label {
+          color: #ff4545;
+        }
+
+        .turn-content-tactical {
+          font-size: 14px;
+          color: #E2E8F0;
+          line-height: 1.5;
+        }
+
+        @keyframes terminal-blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
     </div>
   );
 }

@@ -98,6 +98,8 @@ CRITICAL RULES:
 6. Detect signals of resistance or fatigue:
    → If present, reduce pressure and move toward close
 
+7. LOWBALL DETECTION: If the other party offers significantly less than the Goal (${context.goal}) or hits the Walkaway (${context.walkaway}), you MUST set red_flag to TRUE and power_delta to a negative value (-2 to -5).
+
 Context:
 - Deal type: ${context.deal_type}
 - User's goal: ${context.goal}
@@ -121,11 +123,14 @@ Decision rules:
 
 Return ONLY JSON:
 {
-  "suggestion": "Next best line to say (≤15 words)",
+  "suggestion": "Strategic summary (≤10 words)",
+  "script": "Verbatim text for the user to say (≤20 words)",
   "tactic": "anchoring | urgency_pressure | social_proof | hard_close | lowball | good_cop_bad_cop | silence_pressure | flinch | close | hold | null",
   "confidence": 0.85,
   "power_delta": -1,
   "red_flag": false,
+  "sentiment": "Positive | Neutral | Aggressive",
+  "risk_score": "Low | Moderate | High | Critical",
   "reasoning": "Include phase + why pushing or closing is chosen."
 }
 

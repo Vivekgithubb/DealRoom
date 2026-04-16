@@ -1,17 +1,6 @@
-import { TACTIC_LABELS, TACTIC_COLORS } from "../contracts";
+import { TACTIC_LABELS } from "../contracts";
 import useSessionStore from "../store/sessionStore";
-
-const TACTIC_ICONS = {
-  anchoring: "⚓",
-  urgency_pressure: "⏰",
-  social_proof: "👥",
-  hard_close: "🔒",
-  lowball: "📉",
-  good_cop_bad_cop: "🎭",
-  silence_pressure: "🤐",
-  flinch: "😱",
-  unknown: "❓",
-};
+import { AlertTriangle, ShieldAlert } from "lucide-react";
 
 export default function TacticBadge() {
   const currentWhisper = useSessionStore((s) => s.currentWhisper);
@@ -22,20 +11,52 @@ export default function TacticBadge() {
 
   const tactic = currentWhisper.tactic;
   const label = TACTIC_LABELS[tactic] || tactic;
-  const color = TACTIC_COLORS[tactic] || "#94a3b8";
-  const icon = TACTIC_ICONS[tactic] || "🎯";
 
   return (
-    <div
-      className="tactic-badge"
-      style={{
-        color: color,
-        borderColor: `${color}40`,
-        background: `${color}15`,
-      }}
-    >
-      <span className="tactic-badge-icon">{icon}</span>
-      {label} Detected
+    <div className="tactical-tactic-detected">
+      <div className="tactic-warning-icon">
+        <ShieldAlert size={20} />
+      </div>
+      <div className="tactic-info">
+        <div className="tactic-status">HOSTILE_TACTIC_DETECTED</div>
+        <div className="tactic-label">{label.toUpperCase()}</div>
+      </div>
+      <style>{`
+        .tactical-tactic-detected {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          background: #ff454511;
+          border: 1px solid #ff454544;
+          padding: 12px;
+          font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tactic-warning-icon {
+          color: #ff4545;
+          animation: pulse-danger 1s infinite;
+        }
+
+        .tactic-status {
+          font-size: 8px;
+          color: #ff4545;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+        }
+
+        .tactic-label {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 20px;
+          color: #FFFFFF;
+          letter-spacing: 0.05em;
+          line-height: 1;
+        }
+
+        @keyframes pulse-danger {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
     </div>
   );
 }

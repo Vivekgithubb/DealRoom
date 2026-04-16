@@ -81,7 +81,10 @@ function parseWhisperResponse(raw) {
     // Validate and normalize the response
     return {
       suggestion: typeof parsed.suggestion === "string"
-        ? parsed.suggestion.slice(0, 100)
+        ? parsed.suggestion
+        : "N/A",
+      script: typeof parsed.script === "string"
+        ? parsed.script
         : "Take a moment before responding.",
       tactic: parsed.tactic || null,
       confidence: typeof parsed.confidence === "number"
@@ -91,6 +94,8 @@ function parseWhisperResponse(raw) {
         ? Math.max(-5, Math.min(5, parsed.power_delta))
         : 0,
       red_flag: Boolean(parsed.red_flag),
+      sentiment: parsed.sentiment || "Neutral",
+      risk_score: parsed.risk_score || "Low",
       reasoning: typeof parsed.reasoning === "string"
         ? parsed.reasoning
         : "Analysis complete.",
@@ -99,11 +104,14 @@ function parseWhisperResponse(raw) {
     console.error("Failed to parse whisper response:", err.message);
     // Fallback: return a safe default rather than crashing
     return {
-      suggestion: "Take a moment before responding.",
+      suggestion: "Tactical Pause",
+      script: "Take a moment before responding.",
       tactic: "unknown",
       confidence: 0.4,
       power_delta: 0,
       red_flag: false,
+      sentiment: "Neutral",
+      risk_score: "Moderate",
       reasoning: "Could not parse model response.",
     };
   }

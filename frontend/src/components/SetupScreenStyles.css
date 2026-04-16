@@ -1,0 +1,433 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+.tactical-wrapper {
+  background-color: #111111;
+  min-height: calc(100vh - 80px);
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: 'Space Grotesk', sans-serif;
+  color: #F3F3F3;
+}
+
+.tactical-grid {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+@media (max-width: 968px) {
+  .tactical-grid {
+    flex-direction: column;
+  }
+}
+
+.tactical-left {
+  background-color: #000000;
+  flex: 1;
+  padding: 50px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tactical-right {
+  background-color: #1A1A1A;
+  flex: 1.2;
+  padding: 40px;
+  border-radius: 4px;
+}
+
+/* LEFT PANEL */
+.phase-badge-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.phase-badge {
+  background-color: #DFFF00;
+  color: #000000;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.phase-text {
+  font-family: 'JetBrains Mono', monospace;
+  color: #888888;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tactical-hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 96px;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  margin-bottom: 30px;
+  color: #FFFFFF;
+}
+
+.tactical-hero-subtitle {
+  color: #888888;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 90%;
+  margin-bottom: 60px;
+}
+
+.tactical-metrics {
+  display: flex;
+  gap: 20px;
+  margin-top: auto;
+}
+
+.metric-box {
+  background-color: #1A1A1A;
+  padding: 20px;
+  flex: 1;
+  border-radius: 4px;
+  border: 1px solid #262626;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-family: 'Bebas Neue', sans-serif;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.metric-value.accent {
+  color: #DFFF00;
+}
+
+.metric-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* RIGHT PANEL */
+.mission-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.mission-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.mission-icon {
+  color: #DFFF00;
+  display: flex;
+  align-items: center;
+}
+
+.tactical-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.form-field.full {
+  grid-column: span 2;
+}
+
+.tactical-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  color: #888888;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.tactical-input {
+  width: 100%;
+  background-color: #262626;
+  border: 1px solid transparent;
+  padding: 16px 20px;
+  color: #F3F3F3;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  border-radius: 4px;
+  outline: none;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.tactical-input::placeholder {
+  color: #555555;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.tactical-input:focus {
+  background-color: #1A1A1A;
+  border-color: #555555;
+  box-shadow: inset 4px 0 0 #DFFF00;
+}
+
+textarea.tactical-input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* BUTTONS & FOOTER */
+.tactical-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.tactical-submit-btn {
+  background-color: #DFFF00;
+  color: #111111;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 18px 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tactical-submit-btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
+}
+
+.tactical-submit-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px rgba(0,0,0,0);
+}
+
+.tactical-submit-btn:disabled {
+  background-color: #333333;
+  color: #666666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.tactical-footer-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lock-icons {
+  display: flex;
+  background: #262626;
+  border-radius: 4px;
+  padding: 10px 12px;
+  gap: 10px;
+  color: #888888;
+}
+
+.footer-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* PLAYBOOK / RESULTS */
+.tactical-playbook {
+  background: #000000;
+  padding: 50px;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 1000px;
+  border-left: 6px solid #DFFF00;
+}
+
+.playbook-header {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  color: #FFFFFF;
+  margin-bottom: 30px;
+  letter-spacing: 0.02em;
+}
+
+.playbook-section {
+  margin-bottom: 30px;
+  background: #1A1A1A;
+  padding: 24px;
+  border-radius: 4px;
+}
+
+.playbook-section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  color: #DFFF00;
+  font-size: 24px;
+  margin-bottom: 15px;
+  letter-spacing: 0.05em;
+}
+
+.playbook-text {
+  color: #cccccc;
+  line-height: 1.6;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.tactical-list {
+  list-style: none;
+  padding: 0;
+}
+
+.tactical-list li {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #cccccc;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.tactical-list li::before {
+  content: '>';
+  color: #DFFF00;
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+}
+
+.tactical-list.red-lines li::before {
+  content: 'X';
+  color: #ff4545;
+}
+
+/* Loading */
+.loading-text {
+  font-family: 'JetBrains Mono', monospace;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.5; }
+}
+
+/* TACTICAL SIMULATOR */
+.tactical-simulator-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .tactical-simulator-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tactical-sim-card {
+  background: #1A1A1A;
+  border: 1px solid #262626;
+  padding: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tactical-sim-card:hover {
+  background: #262626;
+  transform: translateY(-4px);
+}
+
+.tactical-sim-card.selected {
+  background: #262626;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.sim-strategy-type {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.sim-path-label {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+}
+
+.sim-path-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #888888;
+  line-height: 1.5;
+  min-height: 60px;
+}
+
+.sim-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.sim-stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #555555;
+  text-transform: uppercase;
+}
+
+.sim-stat-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sim-stat-bar {
+  height: 4px;
+  background: #333333;
+  width: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.sim-stat-fill {
+  height: 100%;
+  transition: width 1s ease-out;
+}
+
+.sim-tradeoff {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: #aaaaaa;
+  padding-top: 12px;
+  border-top: 1px solid #333333;
+  margin-top: auto;
+}
+

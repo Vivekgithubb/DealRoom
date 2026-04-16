@@ -1,6 +1,8 @@
 import { useState } from "react";
 import apiClient from "../utils/apiClient";
 import useSessionStore from "../store/sessionStore";
+import { ChevronDown, Shield, Lock, Terminal } from "lucide-react";
+import "./SetupScreenStyles.css";
 
 export default function SetupScreen() {
   const sessionId = useSessionStore((s) => s.sessionId);
@@ -20,9 +22,25 @@ export default function SetupScreen() {
   const [playbook, setLocalPlaybook] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  
   const [showSimulator, setShowSimulator] = useState(false);
   const [simulation, setSimulation] = useState(null);
   const [simLoading, setSimLoading] = useState(false);
+
+  const handleSimulate = async () => {
+    setSimLoading(true);
+    try {
+      const res = await apiClient.post("/simulate", { session_id: sessionId });
+      if (res.data.success) {
+        setSimulation(res.data.simulation);
+        setShowSimulator(true);
+      }
+    } catch (err) {
+      console.error("Simulate error:", err);
+    } finally {
+      setSimLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -31,7 +49,7 @@ export default function SetupScreen() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.deal_type || !formData.goal || !formData.walkaway) {
-      setError("Please fill in all required fields.");
+      setError("PLEASE FILL IN ALL REQUIRED PARAMETERS.");
       return;
     }
 
@@ -49,28 +67,13 @@ export default function SetupScreen() {
         setPlaybook(res.data.playbook);
         setLocalPlaybook(res.data.playbook);
       } else {
-        setError("Failed to generate playbook.");
+        setError("FAILED TO GENERATE PLAYBOOK.");
       }
     } catch (err) {
       console.error("Setup error:", err);
-      setError(err.response?.data?.error || "Failed to connect to server.");
+      setError(err.response?.data?.error || "FAILED TO CONNECT TO SERVER.");
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleSimulate = async () => {
-    setSimLoading(true);
-    try {
-      const res = await apiClient.post("/simulate", { session_id: sessionId });
-      if (res.data.success) {
-        setSimulation(res.data.simulation);
-        setShowSimulator(true);
-      }
-    } catch (err) {
-      console.error("Simulate error:", err);
-    } finally {
-      setSimLoading(false);
     }
   };
 
@@ -79,155 +82,148 @@ export default function SetupScreen() {
   };
 
   return (
-    <div className="setup-container">
-      <div className="setup-hero">
-        <h1 className="setup-hero-title">Prepare Your Strategy</h1>
-        <p className="setup-hero-subtitle">
-          Enter your deal context below. Our AI strategist will generate a
-          tailored playbook before you begin.
-        </p>
-      </div>
-
+    <div className="tactical-wrapper">
       {!playbook ? (
-        <form className="setup-form" onSubmit={handleSubmit}>
-          <div className="card" style={{ animationDelay: "0.1s" }}>
-            <div className="input-group">
-              <label className="input-label" htmlFor="deal_type">
-                Deal Type *
-              </label>
-              <input
-                id="deal_type"
-                name="deal_type"
-                className="input-field"
-                placeholder="e.g., Salary negotiation, Vendor contract, Real estate deal"
-                value={formData.deal_type}
-                onChange={handleChange}
-                required
-              />
+        <div className="tactical-grid">
+          {/* Left Panel */}
+          <div className="tactical-left">
+            <div className="phase-badge-container">
+              <span className="phase-badge">PHASE_01</span>
+              <span className="phase-text">PREPARATION SEQUENCE</span>
             </div>
+            
+            <h1 className="tactical-hero-title">READY<br/>THE<br/>ROOM.</h1>
+            <p className="tactical-hero-subtitle">
+              Initialize negotiation parameters. Define leverage points and baseline objectives before high-stakes engagement begins.
+            </p>
           </div>
 
-          <div className="card" style={{ animationDelay: "0.2s" }}>
-            <div className="input-group">
-              <label className="input-label" htmlFor="goal">
-                Your Goal *
-              </label>
-              <textarea
-                id="goal"
-                name="goal"
-                className="input-field"
-                placeholder="What do you want to achieve? Be specific about your ideal outcome."
-                value={formData.goal}
-                onChange={handleChange}
-                rows={3}
-                required
-              />
+          {/* Right Panel */}
+          <div className="tactical-right">
+            <div className="mission-header">
+              <Terminal className="mission-icon" size={20} strokeWidth={3} />
+              <h2 className="mission-title">MISSION PARAMETERS</h2>
             </div>
-          </div>
 
-          <div className="card" style={{ animationDelay: "0.3s" }}>
-            <div className="input-group">
-              <label className="input-label" htmlFor="walkaway">
-                Walkaway Point *
-              </label>
-              <textarea
-                id="walkaway"
-                name="walkaway"
-                className="input-field"
-                placeholder="What's the minimum outcome you'll accept? Below this, you walk away."
-                value={formData.walkaway}
-                onChange={handleChange}
-                rows={2}
-                required
-              />
-            </div>
-          </div>
+            <form onSubmit={handleSubmit}>
+              <div className="tactical-form-grid">
+                
+                <div className="form-field">
+                  <label className="tactical-label">NEGOTIATION TOPIC</label>
+                  <input
+                    name="deal_type"
+                    className="tactical-input"
+                    placeholder="E.G. Q4 CLOUD INFRASTRUCTURE RE..."
+                    value={formData.deal_type}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <div className="card" style={{ animationDelay: "0.4s" }}>
-            <div className="input-group">
-              <label className="input-label" htmlFor="counterparty_context">
-                Counterparty Context (Optional)
-              </label>
-              <textarea
-                id="counterparty_context"
-                name="counterparty_context"
-                className="input-field"
-                placeholder="Who are you negotiating with? Any background info on their position, style, or constraints?"
-                value={formData.counterparty_context}
-                onChange={handleChange}
-                rows={3}
-              />
-            </div>
-          </div>
+                <div className="form-field">
+                  <label className="tactical-label">COUNTERPARTY NAME</label>
+                  <input
+                    name="counterparty_context"
+                    className="tactical-input"
+                    placeholder="E.G. GLOBAL CORE SYSTEMS INC."
+                    value={formData.counterparty_context}
+                    onChange={handleChange}
+                  />
+                </div>
 
-          {error && (
-            <div className="red-flag-alert">
-              <span className="red-flag-icon">⚠️</span>
-              <span className="red-flag-text">{error}</span>
-            </div>
-          )}
+                <div className="form-field full">
+                  <label className="tactical-label">PRIMARY GOALS & LEVERAGE</label>
+                  <textarea
+                    name="goal"
+                    className="tactical-input"
+                    placeholder="LIST KEY OBJECTIVES, MAXIMUM BUDGET, AND CRITICAL DEAL-BREAKERS..."
+                    value={formData.goal}
+                    onChange={handleChange}
+                    required
+                    style={{ minHeight: '80px' }}
+                  />
+                </div>
 
-          <div className="setup-actions">
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <span className="spinner"></span>
-                  Generating Playbook...
-                </>
-              ) : (
-                "🎯 Generate Playbook"
-              )}
-            </button>
-          </div>
-        </form>
-      ) : (
-        <div className="playbook-container">
-          <div className="card">
-            <div className="card-header">
-              <div>
-                <h2 className="card-title">📋 Your Playbook</h2>
-                <p className="card-subtitle">
-                  AI-generated strategy for your negotiation
-                </p>
+                <div className="form-field full">
+                  <label className="tactical-label">BASELINE & WALKAWAY</label>
+                  <textarea
+                    name="walkaway"
+                    className="tactical-input"
+                    placeholder="ENTER YOUR MINIMUM ACCEPTABLE OUTCOME..."
+                    value={formData.walkaway}
+                    onChange={handleChange}
+                    required
+                    style={{ minHeight: '80px' }}
+                  />
+                </div>
+
               </div>
-            </div>
 
-            <div className="playbook-section">
-              <h3 className="playbook-section-title">Strategy Summary</h3>
-              <p className="playbook-text">{playbook.playbook_summary}</p>
-            </div>
+              {error && (
+                <div className="tactical-alert">
+                  [!] ERROR: {error}
+                </div>
+              )}
 
-            <div className="playbook-section">
-              <h3 className="playbook-section-title">🎬 Opening Move</h3>
-              <p className="playbook-text">{playbook.opening_move}</p>
-            </div>
+              <div className="tactical-actions">
+                <button
+                  type="submit"
+                  className="tactical-submit-btn"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span className="loading-text">INITIALIZING...</span>
+                  ) : (
+                    "START SESSION"
+                  )}
+                </button>
 
-            <div className="playbook-section">
-              <h3 className="playbook-section-title">💪 Key Leverage Points</h3>
-              <ul className="playbook-list">
-                {playbook.key_leverage?.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
+                <div className="tactical-footer-info">
+                  <div className="lock-icons">
+                    <Shield size={16} />
+                    <Lock size={16} />
+                  </div>
+                  <span className="footer-text">SECURE TACTICAL ENVIRONMENT ACTIVE</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : (
+        <div className="tactical-playbook">
+          <div className="playbook-header">STRATEGY DEPLOYED.</div>
+          
+          <div className="playbook-section">
+            <h3 className="playbook-section-title">EXECUTIVE SUMMARY</h3>
+            <p className="playbook-text">{playbook.playbook_summary}</p>
+          </div>
 
-            <div className="playbook-section">
-              <h3 className="playbook-section-title">🚫 Red Lines</h3>
-              <ul className="playbook-list red-lines">
-                {playbook.red_lines?.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
+          <div className="playbook-section">
+            <h3 className="playbook-section-title">PHASE 0: OPENING MOVE</h3>
+            <p className="playbook-text">{playbook.opening_move}</p>
+          </div>
+
+          <div className="playbook-section">
+            <h3 className="playbook-section-title">LEVERAGE ACQUIRED</h3>
+            <ul className="tactical-list">
+              {playbook.key_leverage?.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="playbook-section">
+            <h3 className="playbook-section-title">RED LINES [DO NOT CROSS]</h3>
+            <ul className="tactical-list red-lines">
+              {playbook.red_lines?.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
           </div>
 
           {/* Simulator Section */}
           {showSimulator && simulation && (
-            <div style={{ marginTop: "var(--space-6)" }}>
+            <div style={{ marginTop: "40px", borderTop: "2px solid #262626", paddingTop: "40px" }}>
               <SimulatorInline 
                 simulation={simulation} 
                 selectedMode={behaviorMode}
@@ -235,34 +231,28 @@ export default function SetupScreen() {
               />
             </div>
           )}
-
-          <div className="setup-actions" style={{ marginTop: "32px" }}>
-            <button
-              className="btn btn-secondary btn-lg"
-              onClick={handleSimulate}
-              disabled={simLoading}
-            >
-              {simLoading ? (
-                <>
-                  <span className="spinner"></span>
-                  Simulating...
-                </>
-              ) : (
-                "🔮 Simulate Outcomes"
-              )}
-            </button>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
-              <div style={{ fontWeight: "bold", color: "var(--color-primary)", marginBottom: "8px" }}>
-                Active Style: {behaviorMode.toUpperCase()}
-              </div>
-              <button
-                className="btn btn-success btn-lg"
-                onClick={handleStartSession}
-              >
-                🎤 Start Live Session
-              </button>
-            </div>
+          
+          <div className="tactical-actions" style={{ marginTop: "40px" }}>
+             {!showSimulator ? (
+               <button
+                  className="tactical-submit-btn"
+                  onClick={handleSimulate}
+                  disabled={simLoading}
+                >
+                  {simLoading ? (
+                    <span className="loading-text">CALCULATING PATHS...</span>
+                  ) : (
+                    "SIMULATE OUTCOMES"
+                  )}
+                </button>
+             ) : (
+                <button
+                  className="tactical-submit-btn"
+                  onClick={handleStartSession}
+                >
+                  PROCEED TO ENGAGEMENT [MODE: {behaviorMode.toUpperCase()}]
+                </button>
+             )}
           </div>
         </div>
       )}
@@ -273,96 +263,69 @@ export default function SetupScreen() {
 // Inline simulator component
 function SimulatorInline({ simulation, selectedMode, onSelectMode }) {
   const riskColors = {
-    low: "var(--color-success)",
-    medium: "var(--color-warning)",
-    high: "var(--color-danger)",
+    low: "#DFFF00",
+    medium: "#FFA500",
+    high: "#FF4545",
   };
 
   return (
     <div>
       <h3
-        className="text-center"
         style={{
-          fontSize: "var(--text-xl)",
-          fontWeight: "var(--font-bold)",
-          marginBottom: "var(--space-2)",
+          fontFamily: "var(--font-display)",
+          fontSize: "24px",
+          letterSpacing: "0.05em",
+          color: "#FFFFFF",
+          marginBottom: "20px",
+          textAlign: "center"
         }}
       >
-        🔮 Outcome Predictions
+        SELECT ENGAGEMENT PROTOCOL
       </h3>
-      <p
-        className="text-center text-muted"
-        style={{ marginBottom: "var(--space-6)" }}
-      >
-        Three possible paths for your negotiation
-      </p>
 
-      <div className="simulator-grid">
+      <div className="tactical-simulator-grid">
         {simulation.paths?.map((path) => {
-          // Map "conservative" to "defensive" for UI if necessary, though paths return "conservative"
           const isSelected = selectedMode === path.strategy || (selectedMode === "defensive" && path.strategy === "conservative");
+          const modeVal = path.strategy === "conservative" ? "defensive" : path.strategy;
+          
           return (
             <div
               key={path.strategy}
-              className={`sim-card ${path.strategy}`}
-              onClick={() => onSelectMode(path.strategy === "conservative" ? "defensive" : path.strategy)}
+              className={`tactical-sim-card ${isSelected ? 'selected' : ''}`}
+              onClick={() => onSelectMode(modeVal)}
               style={{
-                cursor: "pointer",
-                outline: isSelected ? "3px solid var(--color-primary)" : "none",
-                transform: isSelected ? "scale(1.02)" : "scale(1)",
-                transition: "all 0.2s ease"
+                borderColor: isSelected ? riskColors[path.risk_level] : '#262626',
+                borderWidth: isSelected ? '2px' : '1px'
               }}
             >
-              <div className="sim-card-strategy">
-                {path.strategy === "conservative" ? "defensive" : path.strategy}
-                {isSelected && " (Selected)"}
+              <div className="sim-strategy-type" style={{ color: riskColors[path.risk_level] }}>
+                {modeVal.toUpperCase()}
               </div>
-            <div className="sim-card-label">{path.label}</div>
-            <div className="sim-card-description">{path.description}</div>
+              <div className="sim-path-label">{path.label}</div>
+              <p className="sim-path-desc">{path.description}</p>
 
-            <div className="sim-card-outcome">
-              <strong style={{ color: "var(--color-text-primary)" }}>
-                Expected:{" "}
-              </strong>
-              {path.expected_outcome}
-            </div>
-
-            <div className="sim-card-meta">
-              <div className="sim-meta-row">
-                <span className="sim-meta-label">Success</span>
-                <span
-                  className="sim-meta-value"
-                  style={{ color: riskColors[path.risk_level] }}
-                >
+              <div className="sim-stat-row">
+                <span className="sim-stat-label">SUCCESS PROBABILITY</span>
+                <span className="sim-stat-value" style={{ color: riskColors[path.risk_level] }}>
                   {path.probability_of_success}%
                 </span>
               </div>
-              <div className="sim-meta-row">
-                <span className="sim-meta-label">Risk</span>
-                <span
-                  className="sim-meta-value"
-                  style={{
-                    color: riskColors[path.risk_level],
-                    textTransform: "capitalize",
+              
+              <div className="sim-stat-bar">
+                <div 
+                  className="sim-stat-fill" 
+                  style={{ 
+                    width: `${path.probability_of_success}%`,
+                    backgroundColor: riskColors[path.risk_level]
                   }}
-                >
-                  {path.risk_level}
-                </span>
+                />
+              </div>
+
+              <div className="sim-tradeoff">
+                <span className="sim-stat-label">TRADEOFF: </span>
+                {path.tradeoff}
               </div>
             </div>
-
-            <div className="sim-probability-bar">
-              <div
-                className="sim-probability-fill"
-                style={{ width: `${path.probability_of_success}%` }}
-              />
-            </div>
-
-            <div className="sim-tradeoff">
-              <strong>Tradeoff: </strong>
-              {path.tradeoff}
-            </div>
-          </div>
           );
         })}
       </div>

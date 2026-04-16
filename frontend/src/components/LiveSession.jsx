@@ -7,6 +7,7 @@ import WhisperCard from "./WhisperCard";
 import PowerMeter from "./PowerMeter";
 import TacticBadge from "./TacticBadge";
 import RedFlagAlert from "./RedFlagAlert";
+import "./LiveSessionStyles.css";
 
 export default function LiveSession() {
   const addTurn = useSessionStore((s) => s.addTurn);
@@ -21,7 +22,6 @@ export default function LiveSession() {
   const [manualInput, setManualInput] = useState("");
   const [interimText, setInterimText] = useState("");
 
-  // STT callback — fires on final transcript
   const handleTranscript = useCallback((text) => {
     if (!text.trim()) return;
     setManualInput((prev) => {
@@ -40,20 +40,16 @@ export default function LiveSession() {
     isListening,
   } = useSTT(handleTranscript, handleInterim);
 
-  // Submit a turn
   const handleSubmitTurn = (overrideSpeaker) => {
     const activeSpeaker = overrideSpeaker || speaker;
     const text = manualInput.trim();
     if (!text) return;
 
-    // Add turn to local state
     addTurn({ speaker: activeSpeaker, text });
 
-    // If speaker is "them", emit to backend for AI processing
     if (activeSpeaker === "them") {
       emitThemTurn(text);
     } else {
-      // Store "me" turn in backend transcript too
       emitMeTurn(text);
     }
 
@@ -62,12 +58,9 @@ export default function LiveSession() {
   };
 
   const handleSpeakerClick = (tgtSpeaker) => {
-    // Check if we are switching speakers and there is pending text
     if (manualInput.trim()) {
-      // The pending text belongs to the CURRENT speaker, not the one we are switching to!
       handleSubmitTurn(speaker);
     }
-    // Now switch the active state for the next turn
     setSpeaker(tgtSpeaker);
   };
 
@@ -93,149 +86,112 @@ export default function LiveSession() {
 
   return (
     <div className="live-container">
-      {/* Main panel — transcript + input */}
+      {/* Main panel */}
       <div className="live-main">
-        {/* Red flag at top */}
         <RedFlagAlert />
 
-        <TranscriptPanel />
-
-        {/* Interim text indicator */}
-        <div className="interim-text">
-          {isListening && interimText && (
-            <span>🎙️ Listening: "{interimText}"</span>
-          )}
-          {isListening && !interimText && <span>🎙️ Listening...</span>}
+        <div className="transcript-panel">
+          <div className="transcript-header">
+            <span>_ TRANSCRIPT FEED</span>
+            <span>SECURE LINK ACTIVE</span>
+          </div>
+          <TranscriptPanel />
         </div>
 
-        {/* Input bar */}
-        <div className="input-bar">
-          {/* Mic button */}
+        {isListening && (
+          <div className="interim-text">
+            [ MIC ] {interimText ? interimText : 'AWAITING AUDIO INPUT...'}
+          </div>
+        )}
+
+        <div className="tactical-input-bar">
           <button
-            className={`mic-btn ${isListening ? "listening" : ""}`}
+            className={`mic-btn-tactical ${isListening ? "listening" : ""}`}
             onClick={toggleMic}
-            title={isListening ? "Stop listening" : "Start listening"}
+            title={isListening ? "DEACTIVATE MIC" : "ACTIVATE MIC"}
           >
             {isListening ? "⏹" : "🎤"}
           </button>
 
-          {/* Speaker toggle */}
-          <div className="speaker-toggle">
+          <div className="speaker-toggle-tactical">
             <button
-              className={`speaker-btn ${speaker === "me" ? "active-me" : ""}`}
+              className={`speaker-btn-tactical ${speaker === "me" ? "active-me" : ""}`}
               onClick={() => handleSpeakerClick("me")}
             >
-              Me
+              OP (ME)
             </button>
             <button
-              className={`speaker-btn ${
-                speaker === "them" ? "active-them" : ""
-              }`}
+              className={`speaker-btn-tactical ${speaker === "them" ? "active-them" : ""}`}
               onClick={() => handleSpeakerClick("them")}
             >
-              Them
+              HOSTILE (THEM)
             </button>
           </div>
 
-          {/* Text input */}
           <textarea
-            className="input-bar-field"
+            className="tactical-input-bar-field"
             value={manualInput}
             onChange={(e) => setManualInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={
               speaker === "them"
-                ? "What did they say? (triggers AI whisper)"
-                : "What did you say?"
+                ? "LOG HOSTILE TRANSMISSION..."
+                : "LOG OP TRANSMISSION..."
             }
             rows={1}
           />
 
-          {/* Send button */}
           <button
             className="btn btn-primary"
-            onClick={handleSubmitTurn}
+            onClick={() => handleSubmitTurn()}
             disabled={!manualInput.trim()}
           >
-            Send ↵
+            SEND
           </button>
 
-          {/* End session */}
           <button className="btn btn-danger" onClick={handleEndSession}>
-            End
+            SUBMIT
           </button>
         </div>
       </div>
 
-      {/* Sidebar — AI insights */}
+      {/* Sidebar */}
       <div className="live-sidebar">
-        <WhisperCard />
+
+        <div style={{ pointerEvents: 'none' }}>
+          <WhisperCard />
+        </div>
 
         {currentWhisper && currentWhisper.tactic && (
-          <div className="card" style={{ padding: "var(--space-4)" }}>
-            <div
-              style={{
-                fontSize: "var(--text-xs)",
-                color: "var(--color-text-muted)",
-                marginBottom: "var(--space-2)",
-                fontWeight: "var(--font-semibold)",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              Detected Tactic
+          <div className="tactical-sidebar-card">
+            <div className="tactical-sidebar-header">
+              HOSTILE TACTIC DETECTED
             </div>
             <TacticBadge />
           </div>
         )}
 
-        <PowerMeter />
+        <div className="tactical-sidebar-card">
+          <div className="tactical-sidebar-header">
+            POWER BALANCE
+          </div>
+          <PowerMeter />
+        </div>
 
-        {/* Playbook summary reminder */}
         {playbookSummary && (
-          <div className="card" style={{ padding: "var(--space-4)" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "var(--space-2)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "var(--text-xs)",
-                  color: "var(--color-text-muted)",
-                  fontWeight: "var(--font-semibold)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                📋 Your Strategy
-              </div>
-              <div
-                style={{
-                  fontSize: "0.7rem",
-                  padding: "2px 6px",
-                  borderRadius: "12px",
-                  backgroundColor: "var(--color-primary-light)",
-                  color: "white",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              >
-                {behaviorMode}
-              </div>
+          <div className="tactical-sidebar-card">
+            <div className="tactical-sidebar-header">
+              <span>STRATEGY OVERVIEW</span>
+              <span className="tactical-mode-badge">{behaviorMode}</span>
             </div>
-            <p
-              style={{
-                fontSize: "var(--text-sm)",
-                color: "var(--color-text-secondary)",
-                lineHeight: "var(--leading-relaxed)",
-              }}
-            >
-              {playbookSummary.length > 200
-                ? playbookSummary.slice(0, 200) + "..."
+            <p style={{
+              fontFamily: 'Space Grotesk',
+              fontSize: '13px',
+              color: '#cccccc',
+              lineHeight: '1.5'
+            }}>
+              {playbookSummary.length > 250
+                ? playbookSummary.slice(0, 250) + "..."
                 : playbookSummary}
             </p>
           </div>
