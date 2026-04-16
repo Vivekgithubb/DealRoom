@@ -21,9 +21,10 @@ const useSessionStore = create((set, get) => ({
   powerScore: 0,
   currentWhisper: null,
   extractedData: null, // Structured document intelligence
+  practiceTranscript: [], // Roleplay turns
 
   // Phase management
-  phase: "setup", // "setup" | "live" | "report"
+  phase: "setup", // "setup" | "live" | "report" | "practice"
 
   // Report data
   report: null,
@@ -72,6 +73,10 @@ const useSessionStore = create((set, get) => ({
   setLoading: (isLoading) => set({ isLoading }),
   setError: (error) => set({ error }),
 
+  addPracticeTurn: (turn) => set((s) => ({
+    practiceTranscript: [...s.practiceTranscript, { ...turn, timestamp: Date.now() }]
+  })),
+
   setListening: (isListening) => set({ isListening }),
   setInterimText: (interimText) => set({ interimText }),
 
@@ -87,7 +92,7 @@ const useSessionStore = create((set, get) => ({
       whispers: [],
       powerScore: 0,
       currentWhisper: null,
-      extractedData: null,
+      practiceTranscript: [],
       phase: "setup",
       report: null,
       simulation: null,

@@ -13,6 +13,8 @@ function createSession(id, dealContext) {
     transcript: [],
     whispers: [],
     extractedData: {}, // Structured info from uploaded docs
+    practiceTranscript: [], // Roleplay turns
+    practiceTurns: 0,
   });
   return sessions.get(id);
 }

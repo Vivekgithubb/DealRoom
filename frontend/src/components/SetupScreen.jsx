@@ -174,6 +174,18 @@ export default function SetupScreen() {
 
               <div className="tactical-actions">
                 <button
+                  className="tactical-submit-btn"
+                  onClick={() => {
+                    setDealContext(formData);
+                    setPhase("practice");
+                  }}
+                  style={{ background: "#111", color: "#DFFF00", border: "1px solid #DFFF00" }}
+                >
+                  <Brain size={16} />
+                  <span>DRY RUN / PRACTICE</span>
+                </button>
+
+                <button
                   type="submit"
                   className="tactical-submit-btn"
                   disabled={isLoading}

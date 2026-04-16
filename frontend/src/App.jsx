@@ -2,6 +2,7 @@ import useSessionStore from "./store/sessionStore";
 import SetupScreen from "./components/SetupScreen";
 import LiveSession from "./components/LiveSession";
 import ReportScreen from "./components/ReportScreen";
+import PracticeSession from "./components/PracticeSession";
 import "./index.css";
 
 function App() {
@@ -11,12 +12,14 @@ function App() {
     setup: "Before",
     live: "During",
     report: "After",
+    practice: "Simulator",
   };
 
   const phaseClass = {
     setup: "phase-setup",
     live: "phase-live",
     report: "phase-report",
+    practice: "phase-practice",
   };
 
   return (
@@ -30,6 +33,7 @@ function App() {
 
         <div className={`app-phase-badge ${phaseClass[phase]}`}>
           {phase === "live" && <span className="live-dot"></span>}
+          {phase === "practice" && <span className="live-dot" style={{ background: '#DFFF00' }}></span>}
           {phaseLabels[phase]} Phase
         </div>
       </header>
@@ -38,6 +42,7 @@ function App() {
       {phase === "setup" && <SetupScreen />}
       {phase === "live" && <LiveSession />}
       {phase === "report" && <ReportScreen />}
+      {phase === "practice" && <PracticeSession />}
     </div>
   );
 }

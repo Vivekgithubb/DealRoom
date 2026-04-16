@@ -10,7 +10,12 @@ async function parseDocument(fileBuffer, mimeType) {
 
   try {
     if (mimeType === "application/pdf") {
-      const data = await pdf(fileBuffer);
+      // Ensure we handle different import styles for pdf-parse
+      const pdfParser = typeof pdf === "function" ? pdf : pdf.default;
+      if (typeof pdfParser !== "function") {
+        throw new Error("pdf-parse library is not loaded correctly. Expected function but found: " + typeof pdfParser);
+      }
+      const data = await pdfParser(fileBuffer);
       rawText = data.text;
     } else if (
       mimeType === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
