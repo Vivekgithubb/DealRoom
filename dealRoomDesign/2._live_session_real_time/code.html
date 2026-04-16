@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DEALROOM | LIVE_SESSION</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0e0e0e;
+            color: #ffffff;
+        }
+        .font-space-grotesk {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        /* Custom scrollbar for tactical feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262626;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f6ffc0;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#1a1919",
+                    "inverse-on-surface": "#565554",
+                    "on-tertiary": "#006413",
+                    "primary-container": "#daf900",
+                    "surface-container-lowest": "#000000",
+                    "primary-fixed-dim": "#cdea00",
+                    "primary-dim": "#d0ed00",
+                    "surface-tint": "#f6ffc0",
+                    "error-dim": "#d53d18",
+                    "secondary-container": "#c00014",
+                    "tertiary-fixed-dim": "#00ec3b",
+                    "secondary-fixed-dim": "#ffb0a7",
+                    "inverse-primary": "#586500",
+                    "on-background": "#ffffff",
+                    "tertiary-fixed": "#00fc40",
+                    "tertiary-container": "#00fc40",
+                    "on-secondary-fixed": "#700007",
+                    "on-secondary-fixed-variant": "#a60010",
+                    "surface-container-highest": "#262626",
+                    "outline": "#777575",
+                    "surface-bright": "#2c2c2c",
+                    "on-primary-container": "#505d00",
+                    "on-primary-fixed-variant": "#596700",
+                    "primary-fixed": "#daf900",
+                    "on-tertiary-container": "#005a10",
+                    "secondary-fixed": "#ffc3bd",
+                    "on-primary": "#586500",
+                    "surface-container-high": "#201f1f",
+                    "surface-dim": "#0e0e0e",
+                    "on-surface": "#ffffff",
+                    "on-error-container": "#ffd2c8",
+                    "background": "#0e0e0e",
+                    "error-container": "#b92902",
+                    "outline-variant": "#494847",
+                    "on-surface-variant": "#adaaaa",
+                    "tertiary": "#9cff93",
+                    "inverse-surface": "#fcf8f8",
+                    "on-tertiary-fixed": "#00440a",
+                    "error": "#ff7351",
+                    "on-primary-fixed": "#3f4900",
+                    "on-tertiary-fixed-variant": "#006513",
+                    "surface-variant": "#262626",
+                    "tertiary-dim": "#00ec3b",
+                    "secondary-dim": "#e51a22",
+                    "on-secondary": "#4a0003",
+                    "surface-container-low": "#131313",
+                    "primary": "#f6ffc0",
+                    "surface": "#0e0e0e",
+                    "on-secondary-container": "#fff6f4",
+                    "on-error": "#450900",
+                    "secondary": "#ff7166"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary selection:text-black overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-zinc-950 flex justify-between items-center w-full px-6 py-4 z-50 fixed top-0 left-0 right-0">
+<div class="text-2xl font-black text-lime-300 tracking-widest font-space-grotesk uppercase">DEALROOM</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-lime-300 border-b-4 border-lime-300 pb-1 font-space-grotesk uppercase tracking-tighter transition-colors duration-150" href="#">LIVE SESSION</a>
+<a class="text-zinc-500 font-space-grotesk uppercase tracking-tighter hover:text-lime-200 hover:bg-zinc-900 transition-colors duration-150" href="#">STRATEGY</a>
+<a class="text-zinc-500 font-space-grotesk uppercase tracking-tighter hover:text-lime-200 hover:bg-zinc-900 transition-colors duration-150" href="#">HISTORY</a>
+<a class="text-zinc-500 font-space-grotesk uppercase tracking-tighter hover:text-lime-200 hover:bg-zinc-900 transition-colors duration-150" href="#">SIMULATOR</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-zinc-400 hover:text-lime-300 transition-colors">settings</button>
+<button class="material-symbols-outlined text-zinc-400 hover:text-lime-300 transition-colors">account_circle</button>
+</div>
+</nav>
+<div class="flex flex-1 pt-16 h-full overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="hidden md:flex flex-col h-full w-64 bg-black border-r-2 border-zinc-900 font-space-grotesk uppercase shrink-0">
+<div class="p-6 border-b border-zinc-900">
+<div class="text-xl font-bold text-lime-300">OPERATOR_01</div>
+<div class="text-[10px] text-zinc-500 tracking-widest mt-1">ACTIVE_SESSION: #4209</div>
+</div>
+<div class="flex-1 py-4 flex flex-col gap-1">
+<a class="flex items-center gap-3 bg-lime-300 text-black font-bold p-3 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span>TERMINAL</span>
+</a>
+<a class="flex items-center gap-3 text-zinc-400 p-3 hover:bg-zinc-800 hover:text-white transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span>TACTICS</span>
+</a>
+<a class="flex items-center gap-3 text-zinc-400 p-3 hover:bg-zinc-800 hover:text-white transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span>INTEL</span>
+</a>
+<a class="flex items-center gap-3 text-zinc-400 p-3 hover:bg-zinc-800 hover:text-white transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span>REPORTS</span>
+</a>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<button class="w-full bg-zinc-900 text-lime-300 border-2 border-lime-300 py-3 font-bold hover:bg-lime-300 hover:text-black transition-colors">
+                    NEW NEGOTIATION
+                </button>
+<a class="flex items-center gap-3 text-zinc-400 p-3 hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>LOGOUT</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col bg-surface overflow-hidden relative">
+<!-- RedFlagAlert Banner (Conditional) -->
+<div class="w-full bg-secondary-container text-on-secondary-container px-6 py-3 flex items-center justify-between z-40 border-b-2 border-black">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-space-grotesk font-black tracking-widest uppercase">CRITICAL ALERT: COUNTER-RISK DETECTED</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs font-bold bg-black px-2 py-1">THREAT LEVEL: HIGH</span>
+<button class="material-symbols-outlined">close</button>
+</div>
+</div>
+<div class="flex h-full overflow-hidden">
+<!-- TranscriptPanel -->
+<section class="flex-1 flex flex-col p-6 overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<div class="flex flex-col">
+<h2 class="text-3xl font-black font-space-grotesk uppercase tracking-tight">REAL-TIME_TRANSCRIPT</h2>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-2 h-2 rounded-full bg-lime-300 animate-pulse"></span>
+<span class="text-xs text-zinc-500 font-space-grotesk uppercase tracking-widest">TRANSCRIBING...</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="bg-zinc-900 px-4 py-2 border border-zinc-800 text-xs font-bold font-space-grotesk uppercase hover:border-lime-300 transition-colors">EXPORT</button>
+<button class="bg-zinc-900 px-4 py-2 border border-zinc-800 text-xs font-bold font-space-grotesk uppercase hover:border-lime-300 transition-colors">BOOKMARK</button>
+</div>
+</div>
+<!-- Scrollable Transcript Area -->
+<div class="flex-1 overflow-y-auto pr-4 flex flex-col gap-6">
+<!-- Message Block: Them -->
+<div class="flex flex-col gap-2 max-w-3xl">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-black text-secondary bg-secondary/10 px-2 py-0.5 font-space-grotesk uppercase">THEM</span>
+<span class="text-[10px] text-zinc-600 font-space-grotesk">14:02:44</span>
+</div>
+<div class="bg-surface-container-low p-5 border-l-4 border-secondary text-zinc-300 leading-relaxed font-body">
+                                "We have reviewed the proposed architecture and while we appreciate the technical depth, the current licensing structure remains 15% above our quarterly allocation for this project. We may need to look at competitors if this is the final offer."
+                            </div>
+</div>
+<!-- Message Block: Me -->
+<div class="flex flex-col gap-2 max-w-3xl self-end items-end">
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-zinc-600 font-space-grotesk">14:03:12</span>
+<span class="text-[10px] font-black text-primary bg-primary/10 px-2 py-0.5 font-space-grotesk uppercase">ME</span>
+</div>
+<div class="bg-surface-container-high p-5 border-r-4 border-primary text-zinc-200 leading-relaxed font-body text-right">
+                                "I understand the budget constraints. However, considering the 24/7 dedicated support and the zero-latency SLA, the ROI is typically realized within the first 60 days. Are you comparing this to providers who offer tiered support or shared instances?"
+                            </div>
+</div>
+<!-- Message Block: Them (Latest) -->
+<div class="flex flex-col gap-2 max-w-3xl">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-black text-secondary bg-secondary/10 px-2 py-0.5 font-space-grotesk uppercase">THEM</span>
+<span class="text-[10px] text-zinc-600 font-space-grotesk">14:04:05</span>
+</div>
+<div class="bg-surface-container-low p-5 border-l-4 border-secondary text-white leading-relaxed font-body relative group">
+<div class="absolute -right-2 top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 bg-zinc-800 text-xs hover:text-lime-300"><span class="material-symbols-outlined text-sm">flag</span></button>
+</div>
+                                "The SLA is attractive, but our internal board is very sensitive to fixed costs this year. Can we discuss a performance-based incentive or a volume-tiered approach?"
+                            </div>
+</div>
+<!-- Real-time typing indicator -->
+<div class="flex items-center gap-2 p-2">
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce"></div>
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce [animation-delay:0.2s]"></div>
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce [animation-delay:0.4s]"></div>
+</div>
+<span class="text-[10px] text-zinc-600 font-space-grotesk uppercase tracking-tighter">THEM IS TYPING...</span>
+</div>
+</div>
+<!-- Input Area -->
+<div class="mt-4 flex gap-4">
+<div class="flex-1 relative">
+<input class="w-full bg-surface-container-highest border-0 focus:ring-2 focus:ring-primary p-4 font-body text-sm placeholder:text-zinc-600" placeholder="TYPE RESPONSE OR COMMAND..." type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex gap-3 text-zinc-500">
+<span class="material-symbols-outlined cursor-pointer hover:text-white">mic</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-white">attach_file</span>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-8 font-black font-space-grotesk uppercase tracking-widest hover:bg-primary-dim transition-colors">
+                            SEND
+                        </button>
+</div>
+</section>
+<!-- Sidebar / Right Panel -->
+<aside class="w-96 bg-surface-container-low border-l-2 border-zinc-900 p-6 flex flex-col gap-6 overflow-y-auto">
+<!-- PowerMeter -->
+<div class="bg-surface-container p-5 border-t-4 border-primary">
+<div class="flex justify-between items-end mb-4">
+<h3 class="text-xs font-black font-space-grotesk uppercase tracking-widest text-zinc-500">POWER_METER</h3>
+<span class="text-4xl font-black font-space-grotesk text-primary">+15</span>
+</div>
+<div class="h-12 bg-black flex gap-1 p-1">
+<!-- Negative segments -->
+<div class="flex-1 bg-zinc-900"></div>
+<div class="flex-1 bg-zinc-900"></div>
+<div class="flex-1 bg-zinc-900"></div>
+<div class="flex-1 bg-zinc-900"></div>
+<div class="flex-1 bg-zinc-900"></div>
+<!-- Positive segments -->
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary/40"></div>
+<div class="flex-1 bg-zinc-900"></div>
+<div class="flex-1 bg-zinc-900"></div>
+</div>
+<div class="mt-4 flex justify-between text-[10px] font-space-grotesk uppercase text-zinc-500 tracking-tighter">
+<span>OPPONENT DOMINANCE</span>
+<span>YOU HAVE LEVERAGE</span>
+</div>
+</div>
+<!-- WhisperCard -->
+<div class="bg-surface-container p-5 border-t-4 border-primary-container relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-6xl">psychology</span>
+</div>
+<h3 class="text-xs font-black font-space-grotesk uppercase tracking-widest text-primary-container mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+                            AI_WHISPER
+                        </h3>
+<p class="text-lg font-bold font-space-grotesk leading-tight text-white mb-4">
+                            "Pivot to value-based pricing now. Mention the TCO reduction to bypass the board's fixed-cost objection."
+                        </p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary-container text-on-primary-container py-2 text-[10px] font-black font-space-grotesk uppercase tracking-widest hover:brightness-110">EXECUTE</button>
+<button class="flex-1 border border-primary-container text-primary-container py-2 text-[10px] font-black font-space-grotesk uppercase tracking-widest hover:bg-primary-container/10">DISMISS</button>
+</div>
+</div>
+<!-- TacticBadges -->
+<div class="bg-surface-container p-5 border-t-4 border-zinc-700">
+<h3 class="text-xs font-black font-space-grotesk uppercase tracking-widest text-zinc-500 mb-4">DETECTED_TACTICS</h3>
+<div class="flex flex-wrap gap-2">
+<div class="flex items-center gap-2 bg-secondary-container/20 px-3 py-1.5 border border-secondary/30">
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span>
+<span class="text-[11px] font-bold font-space-grotesk uppercase text-secondary">ANCHOR</span>
+</div>
+<div class="flex items-center gap-2 bg-secondary-container/20 px-3 py-1.5 border border-secondary/30">
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span>
+<span class="text-[11px] font-bold font-space-grotesk uppercase text-secondary">SILENCE</span>
+</div>
+<div class="flex items-center gap-2 bg-zinc-800 px-3 py-1.5 border border-zinc-700 grayscale opacity-50">
+<span class="w-1.5 h-1.5 bg-zinc-500 rounded-full"></span>
+<span class="text-[11px] font-bold font-space-grotesk uppercase text-zinc-500">GOOD COP</span>
+</div>
+<div class="flex items-center gap-2 bg-zinc-800 px-3 py-1.5 border border-zinc-700">
+<span class="w-1.5 h-1.5 bg-lime-300 rounded-full"></span>
+<span class="text-[11px] font-bold font-space-grotesk uppercase text-lime-300">FEEL-FELT-FOUND</span>
+</div>
+</div>
+</div>
+<!-- Session Stats / Bento Grid Mini -->
+<div class="grid grid-cols-2 gap-3 mt-auto">
+<div class="bg-zinc-900/50 p-4 border-l-2 border-zinc-800">
+<div class="text-[10px] font-space-grotesk text-zinc-500 uppercase">DURATION</div>
+<div class="text-xl font-bold font-space-grotesk">18:42</div>
+</div>
+<div class="bg-zinc-900/50 p-4 border-l-2 border-zinc-800">
+<div class="text-[10px] font-space-grotesk text-zinc-500 uppercase">SENTIMENT</div>
+<div class="text-xl font-bold font-space-grotesk text-secondary">NEUTRAL</div>
+</div>
+<div class="bg-zinc-900/50 p-4 border-l-2 border-zinc-800">
+<div class="text-[10px] font-space-grotesk text-zinc-500 uppercase">CONFIDENCE</div>
+<div class="text-xl font-bold font-space-grotesk text-primary">88%</div>
+</div>
+<div class="bg-zinc-900/50 p-4 border-l-2 border-zinc-800">
+<div class="text-[10px] font-space-grotesk text-zinc-500 uppercase">RISK_SCORE</div>
+<div class="text-xl font-bold font-space-grotesk text-secondary">MODERATE</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Floating Status Bar (Tactical Overlay) -->
+<div class="absolute bottom-24 left-1/2 -translate-x-1/2 bg-zinc-900/80 backdrop-blur-xl px-6 py-2 flex items-center gap-6 border border-zinc-800 z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lime-300 text-sm">radio_button_checked</span>
+<span class="text-[10px] font-space-grotesk font-black uppercase tracking-widest">ENCRYPTED_LINE_ACTIVE</span>
+</div>
+<div class="w-px h-4 bg-zinc-700"></div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-space-grotesk text-zinc-500 uppercase">LATENCY:</span>
+<span class="text-[10px] font-space-grotesk font-bold text-lime-300">14MS</span>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,212 @@
+{
+  "tokens": {
+    "colors": {
+      "background": "#000000",
+      "surface": "#09090b",
+      "primary": "#dfff00",
+      "accent": "#27272a",
+      "danger": "#ef4444",
+      "text": {
+        "primary": "#ffffff",
+        "muted": "#71717a",
+        "onPrimary": "#000000"
+      },
+      "border": "#27272a"
+    },
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "40px"
+    },
+    "borderRadius": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "h1": "48px",
+      "h2": "32px",
+      "body": "16px",
+      "label": "12px",
+      "tracking": {
+        "tight": "-0.05em",
+        "wide": "0.1em"
+      }
+    }
+  },
+  "layouts": {
+    "SetupScreen": {
+      "type": "Flex",
+      "props": {
+        "direction": "row",
+        "height": "100vh",
+        "bg": "background"
+      },
+      "children": [
+        {
+          "type": "Panel",
+          "props": {
+            "flex": 1,
+            "padding": "xl",
+            "justify": "center"
+          },
+          "children": [
+            {
+              "type": "Title",
+              "props": {
+                "text": "READY THE ROOM.",
+                "size": "h1"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Panel",
+          "props": {
+            "flex": 1,
+            "bg": "surface",
+            "padding": "xl",
+            "borderLeft": "border"
+          },
+          "children": [
+            {
+              "type": "SetupForm",
+              "props": {
+                "title": "MISSION PARAMETERS"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "LiveSession": {
+      "type": "Grid",
+      "props": {
+        "columns": "240px 1fr 360px",
+        "height": "100vh",
+        "bg": "background"
+      },
+      "children": [
+        {
+          "type": "SideNavBar",
+          "props": {
+            "active": "TERMINAL"
+          }
+        },
+        {
+          "type": "TranscriptPanel",
+          "props": {
+            "title": "REAL-TIME_TRANSCRIPT"
+          },
+          "bindings": {
+            "messages": "transcript"
+          }
+        },
+        {
+          "type": "Flex",
+          "props": {
+            "direction": "column",
+            "padding": "md",
+            "gap": "md",
+            "borderLeft": "border"
+          },
+          "children": [
+            {
+              "type": "PowerMeter",
+              "bindings": {
+                "value": "powerScore"
+              }
+            },
+            {
+              "type": "WhisperCard",
+              "bindings": {
+                "suggestion": "currentWhisper.suggestion",
+                "tactic": "currentWhisper.tactic",
+                "isVisible": "currentWhisper.isVisible"
+              }
+            },
+            {
+              "type": "RedFlagAlert",
+              "bindings": {
+                "isVisible": "currentWhisper.red_flag"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "components": {
+    "WhisperCard": {
+      "type": "Card",
+      "props": {
+        "bg": "surface",
+        "border": "primary",
+        "padding": "md"
+      },
+      "children": [
+        {
+          "type": "TacticBadge",
+          "props": {
+            "label": "{props.tactic}"
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "{props.suggestion}",
+            "color": "primary"
+          }
+        }
+      ]
+    },
+    "PowerMeter": {
+      "type": "Gauge",
+      "props": {
+        "min": -50,
+        "max": 50,
+        "label": "POWER_METER"
+      }
+    },
+    "TranscriptPanel": {
+      "type": "ScrollArea",
+      "props": {
+        "padding": "md"
+      },
+      "children": [
+        {
+          "type": "List",
+          "props": {
+            "itemComponent": "MessageBubble"
+          }
+        }
+      ]
+    },
+    "MessageBubble": {
+      "type": "Box",
+      "props": {
+        "marginV": "sm"
+      },
+      "variants": {
+        "speaker": {
+          "Me": {
+            "align": "end",
+            "color": "text.muted"
+          },
+          "Them": {
+            "align": "start",
+            "color": "primary"
+          }
+        }
+      }
+    }
+  },
+  "bindings": {
+    "transcript": "state.transcript",
+    "powerScore": "state.powerScore",
+    "currentWhisper": "state.currentWhisper"
+  }
+}

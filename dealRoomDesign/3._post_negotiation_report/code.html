@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DEALROOM | POST-NEGOTIATION ANALYSIS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1a1919",
+                        "inverse-on-surface": "#565554",
+                        "on-tertiary": "#006413",
+                        "primary-container": "#daf900",
+                        "surface-container-lowest": "#000000",
+                        "primary-fixed-dim": "#cdea00",
+                        "primary-dim": "#d0ed00",
+                        "surface-tint": "#f6ffc0",
+                        "error-dim": "#d53d18",
+                        "secondary-container": "#c00014",
+                        "tertiary-fixed-dim": "#00ec3b",
+                        "secondary-fixed-dim": "#ffb0a7",
+                        "inverse-primary": "#586500",
+                        "on-background": "#ffffff",
+                        "tertiary-fixed": "#00fc40",
+                        "tertiary-container": "#00fc40",
+                        "on-secondary-fixed": "#700007",
+                        "on-secondary-fixed-variant": "#a60010",
+                        "surface-container-highest": "#262626",
+                        "outline": "#777575",
+                        "surface-bright": "#2c2c2c",
+                        "on-primary-container": "#505d00",
+                        "on-primary-fixed-variant": "#596700",
+                        "primary-fixed": "#daf900",
+                        "on-tertiary-container": "#005a10",
+                        "secondary-fixed": "#ffc3bd",
+                        "on-primary": "#586500",
+                        "surface-container-high": "#201f1f",
+                        "surface-dim": "#0e0e0e",
+                        "on-surface": "#ffffff",
+                        "on-error-container": "#ffd2c8",
+                        "background": "#0e0e0e",
+                        "error-container": "#b92902",
+                        "outline-variant": "#494847",
+                        "on-surface-variant": "#adaaaa",
+                        "tertiary": "#9cff93",
+                        "inverse-surface": "#fcf8f8",
+                        "on-tertiary-fixed": "#00440a",
+                        "error": "#ff7351",
+                        "on-primary-fixed": "#3f4900",
+                        "on-tertiary-fixed-variant": "#006513",
+                        "surface-variant": "#262626",
+                        "tertiary-dim": "#00ec3b",
+                        "secondary-dim": "#e51a22",
+                        "on-secondary": "#4a0003",
+                        "surface-container-low": "#131313",
+                        "primary": "#f6ffc0",
+                        "surface": "#0e0e0e",
+                        "on-secondary-container": "#fff6f4",
+                        "on-error": "#450900",
+                        "secondary": "#ff7166"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-space-grotesk { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen">
+<!-- SideNavBar (Authority Source: JSON) -->
+<aside class="hidden md:flex flex-col h-screen w-64 bg-black border-r-2 border-zinc-900 font-space-grotesk uppercase fixed left-0 top-0 z-50">
+<div class="px-6 py-8">
+<h1 class="text-xl font-bold text-lime-300 tracking-widest">DEALROOM</h1>
+</div>
+<div class="px-4 mb-8">
+<div class="bg-zinc-900 p-4 border-l-4 border-lime-300">
+<p class="text-[10px] text-zinc-500 mb-1">OPERATOR_01</p>
+<p class="text-xs font-bold text-white tracking-widest">ACTIVE_SESSION: #4209</p>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 text-zinc-400 p-3 hover:bg-zinc-800 hover:text-white transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="text-sm font-bold tracking-tighter">TERMINAL</span>
+</a>
+<a class="flex items-center gap-3 text-zinc-400 p-3 hover:bg-zinc-800 hover:text-white transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="text-sm font-bold tracking-tighter">TACTICS</span>
+</a>
+<a class="flex items-center gap-3 text-zinc-400 p-3 hover:bg-zinc-800 hover:text-white transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-sm font-bold tracking-tighter">INTEL</span>
+</a>
+<a class="flex items-center gap-3 bg-lime-300 text-black font-bold p-3 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="text-sm font-bold tracking-tighter">REPORTS</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<button class="w-full bg-transparent border-2 border-lime-300 text-lime-300 py-3 text-xs font-bold tracking-widest hover:bg-lime-300 hover:text-black transition-colors">
+                NEW NEGOTIATION
+            </button>
+<a class="flex items-center gap-3 text-zinc-400 p-3 mt-4 hover:text-white" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-bold tracking-tighter">LOGOUT</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar (Authority Source: JSON) -->
+<header class="flex justify-between items-center w-full px-6 py-4 bg-zinc-950 sticky top-0 z-40">
+<div class="flex items-center gap-8">
+<div class="md:hidden text-2xl font-black text-lime-300 tracking-widest">DEALROOM</div>
+<nav class="hidden lg:flex items-center gap-6 font-space-grotesk uppercase tracking-tighter text-sm">
+<a class="text-zinc-500 hover:text-lime-200 transition-colors" href="#">LIVE SESSION</a>
+<a class="text-zinc-500 hover:text-lime-200 transition-colors" href="#">STRATEGY</a>
+<a class="text-zinc-500 hover:text-lime-200 transition-colors" href="#">HISTORY</a>
+<a class="text-lime-300 border-b-4 border-lime-300 pb-1" href="#">SIMULATOR</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-zinc-400 cursor-pointer hover:text-lime-300">settings</span>
+<span class="material-symbols-outlined text-zinc-400 cursor-pointer hover:text-lime-300">account_circle</span>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-6 md:p-10 max-w-7xl mx-auto w-full space-y-8">
+<!-- Page Header -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="text-lime-300 font-space-grotesk text-xs tracking-[0.3em] font-bold">ANALYSIS_MODE // ARCHIVE_4209</span>
+<h2 class="text-4xl md:text-6xl font-black font-space-grotesk uppercase tracking-tighter mt-2 leading-none">POST-NEGOTIATION REPORT</h2>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-highest border-2 border-outline-variant px-6 py-3 text-xs font-bold font-space-grotesk tracking-widest hover:border-primary transition-colors">EXPORT_PDF</button>
+<button class="bg-primary text-on-primary border-2 border-on-primary-fixed px-6 py-3 text-xs font-bold font-space-grotesk tracking-widest hover:bg-primary-dim transition-all shadow-[0_0_20px_rgba(246,255,192,0.1)]">SHARE_INTEL</button>
+</div>
+</section>
+<!-- Top Bento Grid: Score & Summary -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- Negotiation Score Block -->
+<div class="lg:col-span-4 bg-surface-container-low p-8 flex flex-col justify-center items-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
+<p class="font-space-grotesk text-xs tracking-[.4em] text-zinc-500 mb-8 self-start">LEVERAGE_INDEX</p>
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-zinc-900" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.92" stroke-dashoffset="110.58" stroke-width="12"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-6xl font-black font-space-grotesk leading-none">82</span>
+<span class="text-[10px] font-bold text-zinc-500 tracking-widest uppercase mt-1">OPTIMAL_ZONE</span>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-2 gap-4 w-full">
+<div class="bg-black/40 p-3 border-l-2 border-primary">
+<p class="text-[9px] text-zinc-500 font-bold uppercase">Aggression</p>
+<p class="text-lg font-space-grotesk font-bold">HIGH</p>
+</div>
+<div class="bg-black/40 p-3 border-l-2 border-secondary">
+<p class="text-[9px] text-zinc-500 font-bold uppercase">Risk_Exposure</p>
+<p class="text-lg font-space-grotesk font-bold">MINIMAL</p>
+</div>
+</div>
+</div>
+<!-- Key Metrics Summary -->
+<div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-6 flex flex-col justify-between">
+<div>
+<p class="font-space-grotesk text-xs tracking-widest text-zinc-500 mb-1">SESSION_DURATION</p>
+<h3 class="text-4xl font-bold font-space-grotesk">42:15<span class="text-sm text-zinc-500 ml-2">MIN</span></h3>
+</div>
+<div class="mt-4 bg-zinc-950 p-4">
+<p class="text-xs text-on-surface-variant leading-relaxed italic">"Patient approach in initial phase led to significant anchor displacement in the final 10 minutes."</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 flex flex-col justify-between">
+<div>
+<p class="font-space-grotesk text-xs tracking-widest text-zinc-500 mb-1">CONCESSIONS_MADE</p>
+<h3 class="text-4xl font-bold font-space-grotesk">03</h3>
+</div>
+<div class="space-y-2 mt-4">
+<div class="flex justify-between text-[10px] font-bold">
+<span>VALUE_RETENTION</span>
+<span class="text-primary">92%</span>
+</div>
+<div class="h-2 bg-zinc-900 w-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 92%"></div>
+</div>
+</div>
+</div>
+<div class="md:col-span-2 bg-surface-container-low p-6 flex flex-col md:flex-row gap-6 items-center">
+<div class="w-full md:w-1/3">
+<p class="font-space-grotesk text-xs tracking-widest text-zinc-500 mb-4">COUNTERPARTY_SENTIMENT</p>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<div>
+<p class="text-lg font-bold font-space-grotesk uppercase">COOPERATIVE</p>
+<p class="text-[10px] text-zinc-500 font-bold">CONFIDENCE: 88%</p>
+</div>
+</div>
+</div>
+<div class="hidden md:block w-px h-12 bg-zinc-800"></div>
+<div class="w-full md:w-2/3">
+<p class="text-xs text-zinc-400 leading-relaxed uppercase tracking-tighter">AI_INSIGHT: Counterparty displayed high anxiety during pricing tier discussion. Next session should double-down on volume-based incentives to close the remaining gap.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Wins, Losses, Missed Ops (Brick Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Wins -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 bg-primary"></span>
+<h4 class="font-space-grotesk font-black text-sm tracking-widest uppercase">CRITICAL_WINS</h4>
+</div>
+<div class="bg-surface-container-highest border-t-4 border-primary p-5">
+<p class="text-[10px] font-bold text-primary mb-2 uppercase tracking-widest">Pricing Structure</p>
+<h5 class="text-lg font-bold font-space-grotesk leading-tight uppercase">Successfully anchored at 15% above target margin.</h5>
+</div>
+<div class="bg-surface-container-highest p-5">
+<p class="text-[10px] font-bold text-primary mb-2 uppercase tracking-widest">Exclusivity Clause</p>
+<h5 class="text-lg font-bold font-space-grotesk leading-tight uppercase">Maintained full distribution rights for EMEA region.</h5>
+</div>
+</div>
+<!-- Losses / Risks -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 bg-secondary"></span>
+<h4 class="font-space-grotesk font-black text-sm tracking-widest uppercase">NEGOTIATED_LOSSES</h4>
+</div>
+<div class="bg-surface-container-low border-t-4 border-secondary p-5">
+<p class="text-[10px] font-bold text-secondary mb-2 uppercase tracking-widest">Payment Terms</p>
+<h5 class="text-lg font-bold font-space-grotesk leading-tight uppercase">Accepted Net-60 instead of preferred Net-30.</h5>
+</div>
+<div class="bg-surface-container-low p-5">
+<p class="text-[10px] font-bold text-secondary mb-2 uppercase tracking-widest">SLA_PENALTIES</p>
+<h5 class="text-lg font-bold font-space-grotesk leading-tight uppercase">Increased liability cap for downtime events by 5%.</h5>
+</div>
+</div>
+<!-- Missed Opportunities -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 bg-zinc-500"></span>
+<h4 class="font-space-grotesk font-black text-sm tracking-widest uppercase">MISSED_LEVERAGE</h4>
+</div>
+<div class="bg-zinc-900 border-t-4 border-zinc-500 p-5">
+<p class="text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">Late Stage Pivot</p>
+<h5 class="text-lg font-bold font-space-grotesk leading-tight uppercase">Opportunity to upsell support tier was not utilized.</h5>
+</div>
+<div class="bg-zinc-900 p-5">
+<p class="text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">Referral Bonus</p>
+<h5 class="text-lg font-bold font-space-grotesk leading-tight uppercase">Failed to secure secondary lead intro during rapport phase.</h5>
+</div>
+</div>
+</div>
+<!-- Follow-up Draft Block -->
+<section class="bg-surface-container-low overflow-hidden">
+<div class="bg-surface-container-highest px-6 py-4 flex justify-between items-center border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">mail</span>
+<h4 class="font-space-grotesk font-black text-sm tracking-widest uppercase">AI_GENERATED_FOLLOW_UP</h4>
+</div>
+<button class="group flex items-center gap-2 text-[10px] font-bold text-zinc-500 hover:text-primary transition-colors uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+                        COPY_TO_CLIPBOARD
+                    </button>
+</div>
+<div class="p-8 relative">
+<div class="absolute top-0 right-0 p-4">
+<img alt="" class="w-24 h-24 object-cover opacity-10 grayscale mix-blend-screen" data-alt="minimalist dark abstract geometric background with subtle flowing lines and grainy texture in monochromatic tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUZixuJ6QCGRD-F-MuqC86K_X9nijG8EiJXQ92Z3Gh6PhYk2XDvKvcRkTLQ_H5HRYk-BVxczVSluTs6bohl2egByyhh0sUhekM-pa60WRETtu7BQaRjs9Cif0ZiFQpEHZjL4mRJbLdP_ij1dDdl7_dW0DbGI8V7s7mA5YGhaMyKKD29OW4FWfOfyKbnNDdnWDcDNV5OEruvoyYQyz4Jh_ereWQsKXET_dIAd0GQEsx7skHapUNCE8IEQcvyUc-z1jdBHiDAxB9"/>
+</div>
+<div class="max-w-3xl space-y-4 font-body text-zinc-300 leading-relaxed">
+<p>Subject: Re: Partnership Negotiation Summary - Session #4209</p>
+<p>Dear Marcus,</p>
+<p>Thank you for the productive session earlier today. I believe we found significant common ground regarding the <strong>Tier 1 Pricing Framework</strong> and the <strong>EMEA Distribution Clause</strong>. These represent strong foundations for our long-term alignment.</p>
+<p>As discussed, we have noted the adjustment to <strong>Net-60 Payment Terms</strong>. To maintain project velocity, I’ve asked my legal team to finalize the SLA documentation incorporating the 5% liability cap adjustment we agreed upon.</p>
+<p>I look forward to our final review session next Tuesday at 10:00 AM EST to wrap up the remaining administrative details.</p>
+<p>Best regards,<br/>The DealRoom Team</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer / Technical Specs -->
+<footer class="mt-auto border-t-2 border-zinc-900 bg-black p-6 font-space-grotesk">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-zinc-600 font-bold tracking-[0.2em] uppercase">
+<div class="flex gap-8">
+<span>SYSTEM_STATUS: NOMINAL</span>
+<span>ENCRYPTION: AES-256-BIT</span>
+</div>
+<div>
+<span>© 2024 DEALROOM TACTICAL INTERFACE</span>
+</div>
+</div>
+</footer>
+</main>
+<!-- BottomNavBar (Mobile Only - Authority Source: JSON Logic) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-zinc-950 flex justify-around items-center h-16 z-50 px-2 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<a class="flex flex-col items-center gap-1 text-zinc-500" href="#">
+<span class="material-symbols-outlined text-xl">terminal</span>
+<span class="text-[8px] font-bold font-space-grotesk tracking-widest">TERMINAL</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-500" href="#">
+<span class="material-symbols-outlined text-xl">military_tech</span>
+<span class="text-[8px] font-bold font-space-grotesk tracking-widest">TACTICS</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">assessment</span>
+<span class="text-[8px] font-bold font-space-grotesk tracking-widest">REPORTS</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-500" href="#">
+<span class="material-symbols-outlined text-xl">account_circle</span>
+<span class="text-[8px] font-bold font-space-grotesk tracking-widest">PROFILE</span>
+</a>
+</nav>
+</body></html>

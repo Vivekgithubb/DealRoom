@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DEALROOM | SESSION SETUP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1a1919",
+                        "inverse-on-surface": "#565554",
+                        "on-tertiary": "#006413",
+                        "primary-container": "#daf900",
+                        "surface-container-lowest": "#000000",
+                        "primary-fixed-dim": "#cdea00",
+                        "primary-dim": "#d0ed00",
+                        "surface-tint": "#f6ffc0",
+                        "error-dim": "#d53d18",
+                        "secondary-container": "#c00014",
+                        "tertiary-fixed-dim": "#00ec3b",
+                        "secondary-fixed-dim": "#ffb0a7",
+                        "inverse-primary": "#586500",
+                        "on-background": "#ffffff",
+                        "tertiary-fixed": "#00fc40",
+                        "tertiary-container": "#00fc40",
+                        "on-secondary-fixed": "#700007",
+                        "on-secondary-fixed-variant": "#a60010",
+                        "surface-container-highest": "#262626",
+                        "outline": "#777575",
+                        "surface-bright": "#2c2c2c",
+                        "on-primary-container": "#505d00",
+                        "on-primary-fixed-variant": "#596700",
+                        "primary-fixed": "#daf900",
+                        "on-tertiary-container": "#005a10",
+                        "secondary-fixed": "#ffc3bd",
+                        "on-primary": "#586500",
+                        "surface-container-high": "#201f1f",
+                        "surface-dim": "#0e0e0e",
+                        "on-surface": "#ffffff",
+                        "on-error-container": "#ffd2c8",
+                        "background": "#0e0e0e",
+                        "error-container": "#b92902",
+                        "outline-variant": "#494847",
+                        "on-surface-variant": "#adaaaa",
+                        "tertiary": "#9cff93",
+                        "inverse-surface": "#fcf8f8",
+                        "on-tertiary-fixed": "#00440a",
+                        "error": "#ff7351",
+                        "on-primary-fixed": "#3f4900",
+                        "on-tertiary-fixed-variant": "#006513",
+                        "surface-variant": "#262626",
+                        "tertiary-dim": "#00ec3b",
+                        "secondary-dim": "#e51a22",
+                        "on-secondary": "#4a0003",
+                        "surface-container-low": "#131313",
+                        "primary": "#f6ffc0",
+                        "surface": "#0e0e0e",
+                        "on-secondary-container": "#fff6f4",
+                        "on-error": "#450900",
+                        "secondary": "#ff7166"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .brick-shadow:hover {
+            box-shadow: 0 0 40px 0px rgba(246, 255, 192, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-zinc-950 flex justify-between items-center w-full px-6 py-4 docked full-width top-0 z-50">
+<div class="text-2xl font-black text-lime-300 tracking-widest font-space-grotesk uppercase tracking-tighter">DEALROOM</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-lime-300 border-b-4 border-lime-300 pb-1 font-space-grotesk uppercase tracking-tighter transition-colors duration-150" href="#">LIVE SESSION</a>
+<a class="text-zinc-500 hover:text-lime-200 hover:bg-zinc-900 font-space-grotesk uppercase tracking-tighter transition-colors duration-150" href="#">STRATEGY</a>
+<a class="text-zinc-500 hover:text-lime-200 hover:bg-zinc-900 font-space-grotesk uppercase tracking-tighter transition-colors duration-150" href="#">HISTORY</a>
+<a class="text-zinc-500 hover:text-lime-200 hover:bg-zinc-900 font-space-grotesk uppercase tracking-tighter transition-colors duration-150" href="#">SIMULATOR</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-zinc-500 hover:text-lime-200 transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="text-zinc-500 hover:text-lime-200 transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</nav>
+<main class="flex-1 flex items-center justify-center p-6 md:p-12 relative overflow-hidden">
+<!-- Aesthetic Background Elements -->
+<div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+<div class="absolute top-10 left-10 w-96 h-96 border-l-2 border-t-2 border-primary"></div>
+<div class="absolute bottom-10 right-10 w-96 h-96 border-r-2 border-b-2 border-primary"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-0 w-full max-w-7xl z-10">
+<!-- Left Branding Side -->
+<div class="lg:col-span-5 bg-surface-container-lowest p-8 md:p-12 border-l-4 border-primary flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-8">
+<span class="bg-primary text-on-primary px-2 py-0.5 font-headline font-bold text-xs uppercase">PHASE_01</span>
+<span class="text-on-surface-variant font-label text-xs tracking-widest uppercase">Preparation Sequence</span>
+</div>
+<h1 class="text-5xl md:text-7xl font-headline font-black uppercase leading-tight mb-6 tracking-tighter">
+                        READY <br/> THE <br/> ROOM.
+                    </h1>
+<p class="text-on-surface-variant max-w-sm font-body leading-relaxed">
+                        Initialize negotiation parameters. Define leverage points and baseline objectives before high-stakes engagement begins. 
+                    </p>
+</div>
+<div class="mt-12">
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-4">
+<div class="text-primary font-headline font-bold text-xl">89%</div>
+<div class="text-[10px] text-on-surface-variant font-label uppercase">Avg Closing Rate</div>
+</div>
+<div class="bg-surface-container-low p-4">
+<div class="text-tertiary font-headline font-bold text-xl">FAST</div>
+<div class="text-[10px] text-on-surface-variant font-label uppercase">Engine Latency</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Form Side -->
+<div class="lg:col-span-7 bg-surface-container-low p-8 md:p-12">
+<form class="space-y-8">
+<!-- Brick Card 1: Context -->
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<h2 class="font-headline font-bold uppercase tracking-widest text-sm text-on-surface">Mission Parameters</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-headline font-bold text-on-surface-variant uppercase tracking-widest">Negotiation Topic</label>
+<input class="bg-surface-container-highest border-none text-on-surface p-4 focus:ring-2 focus:ring-primary font-body uppercase text-sm" placeholder="E.G. Q4 CLOUD INFRASTRUCTURE RENEWAL" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-headline font-bold text-on-surface-variant uppercase tracking-widest">Counterparty Name</label>
+<input class="bg-surface-container-highest border-none text-on-surface p-4 focus:ring-2 focus:ring-primary font-body uppercase text-sm" placeholder="E.G. GLOBAL CORE SYSTEMS INC." type="text"/>
+</div>
+</div>
+</div>
+<!-- Brick Card 2: Strategic Goals -->
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-headline font-bold text-on-surface-variant uppercase tracking-widest">Primary Goals &amp; Leverage</label>
+<textarea class="bg-surface-container-highest border-none text-on-surface p-4 focus:ring-2 focus:ring-primary font-body uppercase text-sm resize-none" placeholder="LIST KEY OBJECTIVES, MAXIMUM BUDGET, AND CRITICAL DEAL-BREAKERS..." rows="3"></textarea>
+</div>
+</div>
+<!-- Brick Card 3: Tactics -->
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-headline font-bold text-on-surface-variant uppercase tracking-widest">Tactical Strategy Selection</label>
+<div class="relative group">
+<select class="w-full bg-surface-container-highest border-none text-on-surface p-4 focus:ring-2 focus:ring-primary font-body uppercase text-sm appearance-none cursor-pointer">
+<option>AGGRESSIVE ANCHORING</option>
+<option>COLLABORATIVE VALUE-CREATION</option>
+<option>PRAGMATIC CONCESSION</option>
+<option>MIRROR &amp; LABEL TACTIC</option>
+</select>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-primary">
+<span class="material-symbols-outlined" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CTA Button Section -->
+<div class="pt-8 border-t border-outline-variant/20 flex flex-col md:flex-row gap-6 items-center">
+<button class="w-full md:w-auto flex-1 bg-primary text-on-primary font-headline font-black text-xl py-5 px-10 border-b-4 border-r-4 border-on-primary-fixed transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:border-b-0 hover:border-r-0 brick-shadow uppercase tracking-tighter" type="button">
+                            START SESSION
+                        </button>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 bg-zinc-800 flex items-center justify-center border border-surface">
+<span class="material-symbols-outlined text-xs" data-icon="shield">shield</span>
+</div>
+<div class="w-8 h-8 bg-zinc-800 flex items-center justify-center border border-surface">
+<span class="material-symbols-outlined text-xs" data-icon="lock">lock</span>
+</div>
+</div>
+<span class="text-[10px] font-label uppercase tracking-widest">Secure Tactical Environment Active</span>
+</div>
+</div>
+</form>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Ghost Implementation for Desktop Navigation Context) -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-screen w-20 flex-col items-center py-20 bg-black border-r-2 border-zinc-900 z-40">
+<div class="flex flex-col gap-10">
+<div class="bg-lime-300 text-black p-3 cursor-pointer group relative">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="absolute left-full ml-4 px-2 py-1 bg-primary text-on-primary text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="text-zinc-400 hover:bg-zinc-800 hover:text-white p-3 cursor-pointer group relative transition-all">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="absolute left-full ml-4 px-2 py-1 bg-surface-variant text-white text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">TACTICS</span>
+</div>
+<div class="text-zinc-400 hover:bg-zinc-800 hover:text-white p-3 cursor-pointer group relative transition-all">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="absolute left-full ml-4 px-2 py-1 bg-surface-variant text-white text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">INTEL</span>
+</div>
+<div class="text-zinc-400 hover:bg-zinc-800 hover:text-white p-3 cursor-pointer group relative transition-all">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="absolute left-full ml-4 px-2 py-1 bg-surface-variant text-white text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">REPORTS</span>
+</div>
+</div>
+<div class="mt-auto mb-10">
+<div class="text-zinc-400 hover:bg-zinc-800 hover:text-white p-3 cursor-pointer group relative transition-all">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="absolute left-full ml-4 px-2 py-1 bg-error text-white text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">LOGOUT</span>
+</div>
+</div>
+</aside>
+<!-- Mobile Bottom Navigation (Visible on mobile only) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-zinc-950 flex justify-around items-center p-4 z-50 border-t border-zinc-900">
+<button class="text-lime-300 flex flex-col items-center">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="text-[8px] font-bold mt-1">TERMINAL</span>
+</button>
+<button class="text-zinc-500 flex flex-col items-center">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="text-[8px] font-bold mt-1">TACTICS</span>
+</button>
+<button class="text-zinc-500 flex flex-col items-center">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="text-[8px] font-bold mt-1">INTEL</span>
+</button>
+<button class="text-zinc-500 flex flex-col items-center">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="text-[8px] font-bold mt-1">REPORTS</span>
+</button>
+</div>
+</body></html>
