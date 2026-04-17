@@ -45,9 +45,6 @@ app.use(express.static(path.join(process.cwd(), "frontend/dist")));
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: Date.now() });
 });
-app.get("*", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "frontend/dist/index.html"));
-});
 
 // REST routes (setup + report + simulate are one-shot, REST is fine for these)
 app.use("/api/setup", require("./routes/setup"));
