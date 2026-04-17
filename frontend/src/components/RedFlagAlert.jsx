@@ -1,23 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSessionStore from "../store/sessionStore";
 import { ShieldAlert, X } from "lucide-react";
 
 export default function RedFlagAlert() {
   const currentWhisper = useSessionStore((s) => s.currentWhisper);
   const [dismissed, setDismissed] = useState(false);
-  const [lastWhisperKey, setLastWhisperKey] = useState(null);
+  const whisperKey = currentWhisper
+    ? `${currentWhisper.suggestion || ""}:${currentWhisper.reasoning || ""}:${currentWhisper.tactic || ""}`
+    : null;
 
-  const whisperKey = currentWhisper ? currentWhisper.suggestion : null;
-  if (whisperKey !== lastWhisperKey) {
-    if (whisperKey !== lastWhisperKey) {
-      setLastWhisperKey(whisperKey);
-      setDismissed(false);
-    }
-  }
+  useEffect(() => {
+    setDismissed(false);
+  }, [whisperKey]);
 
   if (!currentWhisper || !currentWhisper.red_flag || dismissed) {
     return null;
   }
+
+  const isContradiction = currentWhisper.tactic === "contradiction";
+  const bannerLabel = isContradiction
+    ? "CLAIM_INCONSISTENCY_DETECTED"
+    : "PROTOCOL_THREAT_DETECTED";
+  const bannerMessage = isContradiction
+    ? currentWhisper.reasoning || "The other party reversed an earlier claim without explaining the change."
+    : currentWhisper.reasoning || "PRESSURE TACTICS IDENTIFIED. MAINTAIN BASELINE POSITIONS. REDUCE RESPONSE LATENCY.";
 
   return (
     <div className="tactical-red-flag">
@@ -25,8 +31,8 @@ export default function RedFlagAlert() {
         <ShieldAlert size={20} />
       </div>
       <div className="red-flag-content">
-        <div className="red-flag-label">PROTOCOL_THREAT_DETECTED</div>
-        <div className="red-flag-msg">PRESSURE TACTICS IDENTIFIED. MAINTAIN BASELINE POSITIONS. REDUCE RESPONSE LATENCY.</div>
+        <div className="red-flag-label">{bannerLabel}</div>
+        <div className="red-flag-msg">{bannerMessage}</div>
       </div>
       <button
         className="red-flag-close-btn"

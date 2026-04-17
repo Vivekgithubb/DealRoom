@@ -8,8 +8,10 @@ export function useSTT(onTranscript, onInterim) {
   const wsRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const streamRef = useRef(null);
+  const isActiveRef = useRef(false);
 
   const stop = useCallback(() => {
+    isActiveRef.current = false;
     // 1. Kill Web Speech API
     if (recognitionRef.current) {
       recognitionRef.current.onend = null;
@@ -46,7 +48,8 @@ export function useSTT(onTranscript, onInterim) {
   }, []);
 
   const startWebSpeech = useCallback(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       console.error("[STT] Web Speech API not supported.");
       return;
@@ -70,12 +73,17 @@ export function useSTT(onTranscript, onInterim) {
 
     recognition.onerror = (e) => {
       console.error("[STT] WebSpeech Error:", e.error);
-      if (e.error === "not-allowed") setIsListening(false);
+      if (e.error === "not-allowed") {
+        isActiveRef.current = false;
+        setIsListening(false);
+      }
     };
 
     recognition.onend = () => {
       if (isListening) {
-        try { recognition.start(); } catch (e) {}
+        try {
+          recognition.start();
+        } catch (e) {}
       }
     };
 
@@ -88,16 +96,26 @@ export function useSTT(onTranscript, onInterim) {
   const startDeepgram = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (!isActiveRef.current) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
       streamRef.current = stream;
 
       const ws = new WebSocket(
         "wss://api.deepgram.com/v1/listen?model=nova-2&punctuate=true&interim_results=true",
-        ["token", import.meta.env.VITE_DEEPGRAM_KEY]
+        ["token", import.meta.env.VITE_DEEPGRAM_KEY],
       );
       wsRef.current = ws;
 
       ws.onopen = () => {
-        const recorder = new MediaRecorder(stream, { mimeType: "audio/webm;codecs=opus" });
+        if (!isActiveRef.current) {
+          ws.close();
+          return;
+        }
+        const recorder = new MediaRecorder(stream, {
+          mimeType: "audio/webm;codecs=opus",
+        });
         recorder.ondataavailable = (e) => {
           if (e.data.size > 0 && ws.readyState === WebSocket.OPEN) {
             ws.send(e.data);
@@ -123,6 +141,8 @@ export function useSTT(onTranscript, onInterim) {
       ws.onerror = () => {
         console.warn("[STT] Deepgram failed, falling back...");
         stop();
+        isActiveRef.current = true;
+        setIsListening(true);
         startWebSpeech();
       };
     } catch (err) {
@@ -132,6 +152,10 @@ export function useSTT(onTranscript, onInterim) {
   }, [onTranscript, onInterim, startWebSpeech, stop]);
 
   const start = useCallback(() => {
+    if (isActiveRef.current) return;
+    isActiveRef.current = true;
+    setIsListening(true);
+
     if (USE_DEEPGRAM) {
       startDeepgram();
     } else {

@@ -28,6 +28,7 @@ const VALID_TACTICS = [
   "good_cop_bad_cop",
   "silence_pressure",
   "flinch",
+  "contradiction",
   "unknown",
   null, // no tactic detected this turn
 ];

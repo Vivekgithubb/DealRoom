@@ -236,7 +236,7 @@ async function buildPracticeCounterpart(session) {
 
 async function buildPracticeWhisper(session) {
   try {
-    const prompt = buildWhisperPrompt({
+    const whisperContext = {
       ...reduceContext(
         {
           dealContext: session.dealContext,
@@ -247,10 +247,11 @@ async function buildPracticeWhisper(session) {
         6
       ),
       behavior: "balanced",
-    });
+    };
+    const prompt = buildWhisperPrompt(whisperContext);
 
     const raw = await callGemini(prompt, 220, PRACTICE_MODEL);
-    return parseWhisperResponse(raw);
+    return parseWhisperResponse(raw, whisperContext);
   } catch (err) {
     console.error("Practice whisper generation failed:", err.message);
     return {

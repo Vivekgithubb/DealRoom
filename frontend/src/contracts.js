@@ -12,6 +12,7 @@ export const VALID_TACTICS = [
   "good_cop_bad_cop",
   "silence_pressure",
   "flinch",
+  "contradiction",
   "unknown",
   null,
 ];
@@ -25,6 +26,7 @@ export const TACTIC_LABELS = {
   good_cop_bad_cop: "Good Cop / Bad Cop",
   silence_pressure: "Silence Pressure",
   flinch: "Flinch",
+  contradiction: "Contradiction",
   unknown: "Unknown Tactic",
 };
 
@@ -37,6 +39,7 @@ export const TACTIC_COLORS = {
   good_cop_bad_cop: "#8b5cf6",
   silence_pressure: "#64748b",
   flinch: "#ec4899",
+  contradiction: "#ff4545",
   unknown: "#94a3b8",
 };
 

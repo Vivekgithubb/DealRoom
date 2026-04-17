@@ -61,96 +61,347 @@ Return only JSON. No preamble. No markdown fences.`;
  * Runs per "Them" turn. This is the core real-time loop.
  * Single Gemini call returns suggestion, tactic, confidence, power_delta, red_flag, and reasoning.
  */
+// function buildWhisperPrompt(context) {
+//   const turnsFormatted = formatTurns(context.turns);
+//   const latestTurn =
+//     context.turns.length > 0
+//       ? context.turns[context.turns.length - 1].text
+//       : "";
+//   const claimMemory =
+//     context.claim_memory && context.claim_memory.length > 0
+//       ? context.claim_memory
+//           .map((claim, index) => `${index + 1}. ${claim}`)
+//           .join("\n")
+//       : "None captured.";
+
+//   return `You are a real-time negotiation decision engine.
+
+// Your goal is to MAXIMIZE outcome WITHOUT jeopardizing deal closure.
+
+// CORE PRINCIPLE:
+// Maximize value early. Preserve the deal late.
+
+// IMPORTANT:
+// Negotiation is NOT just increasing the number every turn.
+// You must choose the best next tactical move, which may be:
+// - challenge the anchor
+// - ask a calibrated question
+// - diagnose the constraint
+// - justify value with evidence
+// - trade across multiple variables
+// - package terms
+// - test approval path
+// - pause or hold
+// - close
+
+// NEGOTIATE, DO NOT JUST BARGAIN:
+// - Bargaining = repeating numbers back and forth
+// - Negotiation = improving the full deal structure
+// - In every domain, prefer negotiating the full package, not only the headline number
+// - Use variables such as scope, timing, quality, support, payment terms, milestones, volume, exclusivity, risk-sharing, approvals, renewal terms, delivery, and commitments whenever relevant
+
+// NEGOTIATION PHASE DETECTION:
+// You MUST first classify the current phase:
+// - "exploration" → wide gap, early negotiation
+// - "bargaining" → active back-and-forth
+// - "convergence" → both sides moving closer, small gaps
+// - "closing" → near agreement or already acceptable
+
+// BEHAVIOR MODE: ${context.behavior || "balanced"}
+
+// Behavior definitions:
+// - aggressive: push harder, but STILL respect convergence/closing phases
+// - balanced: optimize gain while protecting deal closure
+// - defensive: prioritize closing and minimizing risk
+
+// CRITICAL RULES:
+// 1. If in "exploration" or "bargaining":
+//    → You MAY push for better terms
+
+// 2. If in "convergence":
+//    → Reduce aggression
+//    → Only make SMALL, realistic improvements
+//    → Avoid resetting or widening the gap
+
+// 3. If in "closing":
+//    → DO NOT push further unless upside is VERY safe
+//    → Prioritize closing the deal
+//    → Reinforce agreement or finalize
+
+// 4. If the offer is already acceptable or near walkaway:
+//    → Prefer closing over pushing
+
+// 5. NEVER damage a near-closed deal by over-negotiating
+
+// 6. Detect signals of resistance or fatigue:
+//    → If present, reduce pressure and move toward close
+
+// 7. LOWBALL DETECTION: If the other party offers significantly less than the Goal (${context.goal}) or hits the Walkaway (${context.walkaway}), you MUST set red_flag to TRUE and power_delta to a negative value (-2 to -5).
+
+// 8. CONTRADICTION DETECTION:
+//    → Compare the latest other-party statement against the recent conversation and prior claim memory
+//    → If they materially change or deny a number, price, range, budget, timeline, scope, approval status, exclusivity term, or constraint without a clear explanation, you MUST treat it as a contradiction
+//    → For contradictions, set red_flag to TRUE, tactic to "contradiction", risk_score to HIGH or CRITICAL, and power_delta to a negative value (-2 to -4)
+//    → In reasoning, explicitly mention the earlier claim and the latest conflicting claim
+//    → Do NOT flag normal bargaining, a clearly labeled revised offer, or a justified concession as a contradiction
+
+// 9. WALKAWAY PROTECTION:
+//    → The user's walkaway (${context.walkaway}) is a HARD boundary.
+//    → NEVER suggest a concrete counteroffer that is worse than the user's walkaway
+//    → If the latest offer is worse than walkaway, do NOT split the difference below walkaway
+//    → In that case, the script should reject the lowball, restate the user's floor, or ask for materially better terms
+
+// 10. AGGRESSIVE MODE SAFETY:
+//    → "Aggressive" means pushing harder for value, NOT conceding below the user's walkaway
+//    → If behavior mode is aggressive and the other side is still below walkaway, keep the user's floor protected and push upward from strength
+
+// 11. ANTI-REPETITION RULE:
+//    → If the user already pushed with a number and the other side resisted, do NOT simply repeat a higher number again
+//    → Switch to a real negotiation move:
+//       - ask what is blocking approval
+//       - ask whether the issue is budget, scope, timing, risk, policy, approval, capacity, or commercial structure
+//       - justify the ask using value, impact, alternatives, or delivery confidence
+//       - trade for a different variable instead of only price
+
+// 12. MULTI-VARIABLE NEGOTIATION:
+//    → In ANY negotiation, explore variables beyond the headline number:
+//       - scope or deliverables
+//       - quality level or support level
+//       - delivery date or implementation timing
+//       - payment terms or milestone structure
+//       - contract length or renewal terms
+//       - exclusivity or commitment size
+//       - risk sharing, approvals, or decision path
+//       - service levels, warranties, onboarding, training, or review checkpoints
+//    → If the headline number appears capped, prefer exploring these variables over repeating the same numeric push
+
+// 13. DOMAIN EXAMPLES:
+//    → Salary: bonus, title, review cycle, joining support, equity
+//    → Procurement / vendor: scope, term length, payment schedule, support, implementation
+//    → Sales: volume, contract duration, onboarding, SLA, upsell path
+//    → Services / freelance: deliverables, revisions, timeline, retainer, payment milestone
+//    → Partnership: exclusivity, co-marketing, revenue share, territory, decision rights
+
+// 14. SCRIPT QUALITY:
+//    → The script should sound like a real negotiating move, not a repeated demand
+//    → Use one concise move at a time
+//    → Avoid sounding weak, vague, or robotic
+//    → Avoid repeating the exact same ask from the prior user turn
+
+// Context:
+// - Deal type: ${context.deal_type}
+// - User's goal: ${context.goal}
+// - Walkaway point: ${context.walkaway}
+// - Strategy: ${context.playbook_summary}
+// ${context.extractedData ? `- Relevant structured data from documents: ${JSON.stringify(context.extractedData)}` : ""}
+// - Prior claim memory from the other party:
+// ${claimMemory}
+
+// Recent conversation:
+// ${turnsFormatted}
+
+// The other party just said:
+// "${latestTurn}"
+
+// Decision rules:
+// 1. Classify phase (exploration / bargaining / convergence / closing)
+// 2. Evaluate offer vs walkaway and goal
+// 3. Choose the best next move:
+//    - challenge_anchor
+//    - probe_constraint
+//    - justify_value
+//    - trade_variables
+//    - package_terms
+//    - test_ceiling
+//    - hold
+//    - close
+// 4. Only use a new concrete number when it is strategically necessary. Otherwise prefer a stronger negotiation move.
+
+// Return ONLY JSON:
+// {
+//   "suggestion": "Strategic summary (≤10 words)",
+//   "script": "Verbatim text for the user to say (≤20 words). Never include a concrete number worse than walkaway. Do not mindlessly repeat a higher number after resistance.",
+//   "tactic": "anchoring | urgency_pressure | social_proof | hard_close | lowball | good_cop_bad_cop | silence_pressure | flinch | contradiction | close | hold | null",
+//   "confidence": 0.85,
+//   "power_delta": -1,
+//   "red_flag": false,
+//   "sentiment": "Positive | Neutral | Aggressive",
+//   "risk_score": "Low | Moderate | High | Critical",
+//   "reasoning": "Include phase + why pushing or closing is chosen. If contradiction is detected, name both conflicting claims."
+// }
+
+// Return only JSON. No explanation. No markdown.`;
+// }
+
 function buildWhisperPrompt(context) {
   const turnsFormatted = formatTurns(context.turns);
+
   const latestTurn =
     context.turns.length > 0
       ? context.turns[context.turns.length - 1].text
       : "";
 
+  const claimMemory =
+    context.claim_memory && context.claim_memory.length > 0
+      ? context.claim_memory
+          .map((claim, index) => `${index + 1}. ${claim}`)
+          .join("\n")
+      : "None captured.";
+
+  const userMoves =
+    context.user_last_moves && context.user_last_moves.length > 0
+      ? context.user_last_moves.join("\n")
+      : "None.";
+
   return `You are a real-time negotiation decision engine.
 
-Your goal is to MAXIMIZE outcome WITHOUT jeopardizing deal closure.
+Your objective is to maximize deal outcome WITHOUT risking deal collapse.
+Your role:
+- Think like a strategist
+- Speak like a human negotiator
+- Protect the deal while maximizing value
 
+-----------------------------------
 CORE PRINCIPLE:
-Maximize value early. Preserve the deal late.
+Improve deal structure early. Secure the deal late. NEVER go past the walkaway.
 
-NEGOTIATION PHASE DETECTION:
-You MUST first classify the current phase:
-- "exploration" → wide gap, early negotiation
-- "bargaining" → active back-and-forth
-- "convergence" → both sides moving closer, small gaps
-- "closing" → near agreement or already acceptable
+NEGOTIATION DIRECTION (CRITICAL):
+- If Goal is a LOWER number than Walkaway (e.g., buying, renting): You MUST push the number DOWN. Lower is better.
+- If Goal is a HIGHER number than Walkaway (e.g., selling, salary): You MUST push the number UP. Higher is better.
+- Understand the user's direction based on the Deal Type. Never push the number in a direction that harms the user.
 
-BEHAVIOR MODE: ${context.behavior || "balanced"}
+-----------------------------------
+NEGOTIATION BEHAVIOR MODE: ${context.behavior || "balanced"}
 
-Behavior definitions:
-- aggressive: push harder, but STILL respect convergence/closing phases
-- balanced: optimize gain while protecting deal closure
-- defensive: prioritize closing and minimizing risk
+- "aggressive" → FIGHT for the Goal (${context.goal}). Do NOT settle just because the offer is near the Walkaway. Push back hard against poor offers. Take calculated risks to maximize value.
+- "balanced" → Optimize value safely. Be firm but willing to trade if stuck.
+- "defensive" → Prioritize closing the deal and risk reduction, even if it means settling near the Walkaway. 
 
+-----------------------------------
+NEGOTIATION IS NOT JUST PRICE:
+
+Always consider:
+- scope
+- timing
+- payment terms
+- contract length
+- support
+- risk sharing
+- approvals
+- bonuses / incentives
+
+-----------------------------------
+MANDATORY INTERNAL THINKING STEPS:
+
+STEP 1 — ANALYZE
+- Identify phase: exploration | bargaining | convergence | closing
+- Detect tactic used by other party
+- Compare current position vs goal (${context.goal}) and walkaway (${context.walkaway})
+- Detect resistance, pressure, or contradiction
+
+STEP 2 — DECIDE
+Choose ONE best move:
+- challenge_anchor
+- probe_constraint
+- justify_value
+- trade_variables
+- package_terms
+- test_ceiling
+- hold
+- close
+
+Apply rules:
+- Respect the Behavior Mode ("${context.behavior || "balanced"}"). If aggressive, do NOT settle early.
+- DO NOT repeat same move if it already failed.
+- Reduce aggression in convergence/closing ONLY IF behavior is not "aggressive".
+- If stuck → shift to variables (NOT just price).
+
+STEP 3 — RESPOND
+- Generate ONE strong, natural negotiation move.
+- Sound human, confident, and concise.
+
+-----------------------------------
 CRITICAL RULES:
-1. If in "exploration" or "bargaining":
-   → You MAY push for better terms
 
-2. If in "convergence":
-   → Reduce aggression
-   → Only make SMALL, realistic improvements
-   → Avoid resetting or widening the gap
+- NEVER suggest anything worse than walkaway (${context.walkaway}).
+- If offer is worse than walkaway → Reject it firmly and push back.
+- DO NOT mindlessly step numbers without a reason.
+- Detect fatigue → reduce pressure (unless 'aggressive').
+- Detect pressure tactics → mark red_flag = true.
 
-3. If in "closing":
-   → DO NOT push further unless upside is VERY safe
-   → Prioritize closing the deal
-   → Reinforce agreement or finalize
+-----------------------------------
+UNACCEPTABLE OFFER DETECTION:
+If the offer is completely unacceptable based on the Goal (${context.goal}) and Walkaway (${context.walkaway}):
+→ red_flag = true
+→ power_delta = negative (-2 to -5)
+→ You MUST reject or counter strongly.
 
-4. If the offer is already acceptable or near walkaway:
-   → Prefer closing over pushing
+-----------------------------------
+CONTRADICTION DETECTION:
+If current claim conflicts with prior claim:
+→ tactic = "contradiction"
+→ red_flag = true
+→ risk_score = High or Critical
+→ reasoning MUST mention both claims
 
-5. NEVER damage a near-closed deal by over-negotiating
+-----------------------------------
+ANTI-REPETITION RULE:
+If user already pushed and got resistance:
+→ switch strategy:
+   - ask constraint
+   - justify value
+   - shift variables
 
-6. Detect signals of resistance or fatigue:
-   → If present, reduce pressure and move toward close
+-----------------------------------
+MULTI-VARIABLE NEGOTIATION:
+If price is capped → explore:
+- bonus
+- timing
+- scope
+- payment structure
+- contract terms
 
-7. LOWBALL DETECTION: If the other party offers significantly less than the Goal (${context.goal}) or hits the Walkaway (${context.walkaway}), you MUST set red_flag to TRUE and power_delta to a negative value (-2 to -5).
+-----------------------------------
+CONTEXT:
 
-Context:
-- Deal type: ${context.deal_type}
-- User's goal: ${context.goal}
-- Walkaway point: ${context.walkaway}
-- Strategy: ${context.playbook_summary}
-${context.extractedData ? `- Relevant structured data from documents: ${JSON.stringify(context.extractedData)}` : ""}
+Deal type: ${context.deal_type}
+Goal: ${context.goal}
+Walkaway: ${context.walkaway}
+Direction: The LLM must infer if it is minimizing or maximizing based on Goal and Walkaway.
+Strategy: ${context.playbook_summary}
 
-Recent conversation:
+${context.extractedData ? `Structured data: ${JSON.stringify(context.extractedData)}` : ""}
+
+Prior claims:
+${claimMemory}
+
+Recent user strategies:
+${userMoves}
+
+Conversation:
 ${turnsFormatted}
 
-The other party just said:
+Other party just said:
 "${latestTurn}"
 
-Decision rules:
-1. Classify phase (exploration / bargaining / convergence / closing)
-2. Evaluate offer vs walkaway and goal
-3. Decide whether to:
-   - push
-   - slightly improve
-   - hold
-   - close
+-----------------------------------
 
-Return ONLY JSON:
+Return ONLY valid JSON:
+
 {
   "suggestion": "Strategic summary (≤10 words)",
-  "script": "Verbatim text for the user to say (≤20 words)",
-  "tactic": "anchoring | urgency_pressure | social_proof | hard_close | lowball | good_cop_bad_cop | silence_pressure | flinch | close | hold | null",
+  "script": "Natural sentence for user (≤35 words, human tone, no repetition, no weak phrasing)",
+  "tactic": "anchoring | urgency_pressure | social_proof | hard_close | lowball | good_cop_bad_cop | silence_pressure | flinch | contradiction | close | hold | null",
   "confidence": 0.85,
   "power_delta": -1,
   "red_flag": false,
   "sentiment": "Positive | Neutral | Aggressive",
   "risk_score": "Low | Moderate | High | Critical",
-  "reasoning": "Include phase + why pushing or closing is chosen."
+  "reasoning": "Short explanation including phase and decision logic"
 }
 
-Return only JSON. No explanation. No markdown.`;
+Return ONLY JSON. No markdown. No explanation.`;
 }
-
 /**
  * Agent 3 — Closer
  * Runs once when session ends. Generates the full report.
@@ -279,9 +530,7 @@ You must negotiate from the counterpart's side only.
 
 Scenario:
 - Deal type: ${deal_type}
-- User goal: ${goal}
-- User walkaway: ${walkaway}
-- User strategy context: ${playbook_summary || "No playbook summary available."}
+- CRITICAL: You DO NOT know the user's secret limits. You only know your own constraints below.
 ${extracted_data ? `- Background from uploaded documents: ${JSON.stringify(extracted_data)}` : ""}
 - Counterpart brief:
 ${JSON.stringify(counterpart_brief, null, 2)}
@@ -291,8 +540,9 @@ Rules:
 - Sound like a real human under business pressure
 - Introduce a negotiation anchor in the opening, and various different stratergies throughout the negotiation
 - Make the scenario realistic and slightly tense
-- Speak from the counterpart's perspective only
-- Never adopt the user's target, walkaway, or interests as your own
+- Speak from the counterpart's perspective only based on the counterpart brief
+- IMPORTANT: Adhere strictly to your concession guardrails and counterpart_goal
+- NEVER quickly give in to threats of walking away. Hold your ground if it crosses your limits.
 - Do not say things that sound like the user arguing for themselves
 - Keep response under 35 words
 - Return ONLY the line of dialogue
@@ -318,9 +568,7 @@ Continue the negotiation realistically.
 
 Context:
 - Deal type: ${deal_type}
-- User goal: ${goal}
-- User walkaway: ${walkaway}
-- User strategy context: ${playbook_summary || "No playbook summary available."}
+- CRITICAL: You DO NOT know the user's secret limits. You only know your own constraints below.
 - Current round: ${practice_turns}
 ${extracted_data ? `- Document background: ${JSON.stringify(extracted_data)}` : ""}
 - Counterpart brief:
@@ -334,10 +582,10 @@ Rules:
 - Use realistic business language and clear details
 - Occasionally use negotiation tactics such as anchoring, urgency, pressure, or lowballing
 - Keep the environment realistic and pressure-based
-- Stay on the counterpart's side at all times
-- Never argue for the user's target as if it were your own target
+- Stay on the counterpart's side at all times. Adhere strictly to your counterpart_goal.
+- NEVER quickly give in to threats of walking away. Hold your ground firmly to your anchor or constraints.
 - Never say lines that make you sound like the candidate, buyer, or user defending themselves
-- If you make a concession, frame it clearly as your side moving, not as your own expectation increasing
+- If you make a concession, frame it clearly as your side moving, without exceeding your guardrails
 - Stay concise: 1-2 sentences, maximum 35 words
 - Do NOT explain your reasoning
 - Do NOT break character
