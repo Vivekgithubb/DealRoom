@@ -1,6 +1,6 @@
 /**
  * useSocket Hook
- * 
+ *
  * Manages Socket.io connection and event handlers.
  * Connects to the backend and listens for whisper responses.
  */
@@ -9,7 +9,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { io } from "socket.io-client";
 import useSessionStore from "../store/sessionStore";
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5000";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || undefined;
 
 export function useSocket() {
   const socketRef = useRef(null);
@@ -78,7 +78,7 @@ export function useSocket() {
         setError("Socket not connected. Please refresh.");
       }
     },
-    [sessionId, behaviorMode, setError]
+    [sessionId, behaviorMode, setError],
   );
 
   // Emit "turn:me" event (stores in backend transcript)
@@ -91,7 +91,7 @@ export function useSocket() {
         });
       }
     },
-    [sessionId]
+    [sessionId],
   );
 
   return {
