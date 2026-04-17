@@ -202,7 +202,12 @@ function initGemini() {
   groqApiKey = process.env.GROQ_API_KEY;
 }
 
-async function callGemini(prompt, maxTokens = 1000, modelOverride = null) {
+async function callGemini(
+  prompt,
+  maxTokens = 1000,
+  modelOverride = null,
+  responseMode = "json"
+) {
   if (!groqApiKey) {
     initGemini();
   }
@@ -228,7 +233,9 @@ async function callGemini(prompt, maxTokens = 1000, modelOverride = null) {
             {
               role: "system",
               content:
-                "You are a negotiation assistant. Return ONLY valid JSON. No markdown fences. No preamble. Strictly follow the schema.",
+                responseMode === "text"
+                  ? "You are a negotiation assistant. Respond with plain text only. No markdown. No labels. No JSON."
+                  : "You are a negotiation assistant. Return ONLY valid JSON. No markdown fences. No preamble. Strictly follow the schema.",
             },
             {
               role: "user",
@@ -237,7 +244,9 @@ async function callGemini(prompt, maxTokens = 1000, modelOverride = null) {
           ],
           temperature: 0.6,
           max_tokens: maxTokens,
-          response_format: { type: "json_object" },
+          ...(responseMode === "json"
+            ? { response_format: { type: "json_object" } }
+            : {}),
         }),
       }
     );
@@ -257,7 +266,7 @@ async function callGemini(prompt, maxTokens = 1000, modelOverride = null) {
     if (!modelOverride && !err.message.includes("401")) { 
        const fallbackModel = "llama-3.1-70b-versatile";
        console.warn(`[Groq] Falling back to ${fallbackModel}...`);
-       return callGemini(prompt, maxTokens, fallbackModel);
+       return callGemini(prompt, maxTokens, fallbackModel, responseMode);
     }
     throw err;
   }

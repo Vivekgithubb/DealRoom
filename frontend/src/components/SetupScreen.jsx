@@ -11,6 +11,7 @@ export default function SetupScreen() {
   const setDealContext = useSessionStore((s) => s.setDealContext);
   const setPlaybook = useSessionStore((s) => s.setPlaybook);
   const setPhase = useSessionStore((s) => s.setPhase);
+  const setPracticeSession = useSessionStore((s) => s.setPracticeSession);
   const behaviorMode = useSessionStore((s) => s.behaviorMode);
   const setBehaviorMode = useSessionStore((s) => s.setBehaviorMode);
 
@@ -28,6 +29,7 @@ export default function SetupScreen() {
   const [showSimulator, setShowSimulator] = useState(false);
   const [simulation, setSimulation] = useState(null);
   const [simLoading, setSimLoading] = useState(false);
+  const [practiceLoading, setPracticeLoading] = useState(false);
 
   const handleSimulate = async () => {
     setSimLoading(true);
@@ -84,6 +86,36 @@ export default function SetupScreen() {
 
   const handleStartSession = () => {
     setPhase("live");
+  };
+
+  const handleStartPractice = async () => {
+    setPracticeLoading(true);
+    setError(null);
+
+    try {
+      const res = await apiClient.post("/practice/start", {
+        session_id: sessionId,
+        deal_type: formData.deal_type,
+        goal: formData.goal,
+        walkaway: formData.walkaway,
+      });
+
+      if (res.data.success) {
+        setPracticeSession({
+          transcript: res.data.practice_transcript,
+          turns: res.data.practice_turns,
+          whisper: res.data.whisper,
+        });
+        setPhase("practice");
+      } else {
+        setError("FAILED TO START PRACTICE MODE.");
+      }
+    } catch (err) {
+      console.error("Practice start error:", err);
+      setError(err.response?.data?.error || "FAILED TO START PRACTICE MODE.");
+    } finally {
+      setPracticeLoading(false);
+    }
   };
 
   return (
@@ -239,26 +271,54 @@ export default function SetupScreen() {
             </div>
           )}
           
-          <div className="tactical-actions" style={{ marginTop: "40px" }}>
+          <div className="tactical-actions" style={{ marginTop: "40px", flexWrap: "wrap" }}>
              {!showSimulator ? (
-               <button
-                  className="tactical-submit-btn"
-                  onClick={handleSimulate}
-                  disabled={simLoading}
-                >
-                  {simLoading ? (
-                    <span className="loading-text">CALCULATING PATHS...</span>
-                  ) : (
-                    "SIMULATE OUTCOMES"
-                  )}
-                </button>
+               <>
+                 <button
+                    className="tactical-submit-btn"
+                    onClick={handleSimulate}
+                    disabled={simLoading}
+                  >
+                    {simLoading ? (
+                      <span className="loading-text">CALCULATING PATHS...</span>
+                    ) : (
+                      "SIMULATE OUTCOMES"
+                    )}
+                  </button>
+                  <button
+                    className="tactical-submit-btn"
+                    onClick={handleStartPractice}
+                    disabled={practiceLoading}
+                    style={{ backgroundColor: "#FFFFFF", color: "#111111" }}
+                  >
+                    {practiceLoading ? (
+                      <span className="loading-text">STARTING PRACTICE...</span>
+                    ) : (
+                      "ENTER PRACTICE MODE"
+                    )}
+                  </button>
+               </>
              ) : (
-                <button
-                  className="tactical-submit-btn"
-                  onClick={handleStartSession}
-                >
-                  PROCEED TO ENGAGEMENT [MODE: {behaviorMode.toUpperCase()}]
-                </button>
+                <>
+                  <button
+                    className="tactical-submit-btn"
+                    onClick={handleStartSession}
+                  >
+                    PROCEED TO ENGAGEMENT [MODE: {behaviorMode.toUpperCase()}]
+                  </button>
+                  <button
+                    className="tactical-submit-btn"
+                    onClick={handleStartPractice}
+                    disabled={practiceLoading}
+                    style={{ backgroundColor: "#FFFFFF", color: "#111111" }}
+                  >
+                    {practiceLoading ? (
+                      <span className="loading-text">STARTING PRACTICE...</span>
+                    ) : (
+                      "PRACTICE THIS SCENARIO"
+                    )}
+                  </button>
+                </>
              )}
           </div>
         </div>

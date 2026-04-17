@@ -2,6 +2,7 @@ import useSessionStore from "./store/sessionStore";
 import SetupScreen from "./components/SetupScreen";
 import LiveSession from "./components/LiveSession";
 import ReportScreen from "./components/ReportScreen";
+import PracticeMode from "./components/PracticeMode";
 import "./index.css";
 
 function App() {
@@ -11,12 +12,14 @@ function App() {
     setup: "Before",
     live: "During",
     report: "After",
+    practice: "Practice",
   };
 
   const phaseClass = {
     setup: "phase-setup",
     live: "phase-live",
     report: "phase-report",
+    practice: "phase-live",
   };
 
   return (
@@ -38,6 +41,7 @@ function App() {
       {phase === "setup" && <SetupScreen />}
       {phase === "live" && <LiveSession />}
       {phase === "report" && <ReportScreen />}
+      {phase === "practice" && <PracticeMode />}
     </div>
   );
 }

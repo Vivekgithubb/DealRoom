@@ -42,6 +42,7 @@ app.use("/api/setup", require("./routes/setup"));
 app.use("/api/report", require("./routes/report"));
 app.use("/api/simulate", require("./routes/simulate"));
 app.use("/api/upload", require("./routes/upload"));
+app.use("/api/practice", require("./routes/practice"));
 
 // Socket.io connection handler
 io.on("connection", (socket) => {

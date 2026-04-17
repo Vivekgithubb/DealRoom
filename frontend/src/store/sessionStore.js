@@ -31,6 +31,10 @@ const useSessionStore = create((set, get) => ({
   // Simulation data
   simulation: null,
   behaviorMode: "balanced",
+  practiceTranscript: [],
+  practiceTurns: 0,
+  practiceReport: null,
+  practiceCurrentWhisper: null,
 
   // Loading states
   isLoading: false,
@@ -68,6 +72,21 @@ const useSessionStore = create((set, get) => ({
   setReport: (report) => set({ report }),
   setSimulation: (simulation) => set({ simulation }),
   setBehaviorMode: (mode) => set({ behaviorMode: mode }),
+  setPracticeSession: ({ transcript, turns, whisper }) =>
+    set({
+      practiceTranscript: transcript || [],
+      practiceTurns: turns || 0,
+      practiceCurrentWhisper: whisper || null,
+      practiceReport: null,
+    }),
+  setPracticeReport: (practiceReport) => set({ practiceReport }),
+  resetPracticeSession: () =>
+    set({
+      practiceTranscript: [],
+      practiceTurns: 0,
+      practiceReport: null,
+      practiceCurrentWhisper: null,
+    }),
 
   setLoading: (isLoading) => set({ isLoading }),
   setError: (error) => set({ error }),
@@ -92,6 +111,10 @@ const useSessionStore = create((set, get) => ({
       report: null,
       simulation: null,
       behaviorMode: "balanced",
+      practiceTranscript: [],
+      practiceTurns: 0,
+      practiceReport: null,
+      practiceCurrentWhisper: null,
       isLoading: false,
       error: null,
       isListening: false,

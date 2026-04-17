@@ -13,6 +13,10 @@ function createSession(id, dealContext) {
     transcript: [],
     whispers: [],
     extractedData: {}, // Structured info from uploaded docs
+    practiceTranscript: [],
+    practiceTurns: 0,
+    practiceWhispers: [],
+    practiceCounterpart: null,
   });
   return sessions.get(id);
 }
@@ -30,6 +34,10 @@ function ensureSession(id) {
       transcript: [],
       whispers: [],
       extractedData: {},
+      practiceTranscript: [],
+      practiceTurns: 0,
+      practiceWhispers: [],
+      practiceCounterpart: null,
     };
     sessions.set(id, s);
   }

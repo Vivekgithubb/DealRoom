@@ -117,4 +117,4 @@ function parseWhisperResponse(raw) {
   }
 }
 
-module.exports = { handleWhisperTurn };
+module.exports = { handleWhisperTurn, parseWhisperResponse };

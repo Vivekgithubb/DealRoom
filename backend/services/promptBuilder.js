@@ -24,7 +24,13 @@ function formatTurns(turns) {
  * Agent 1 — Strategist
  * Runs once at session start. Builds the playbook.
  */
-function buildSetupPrompt({ deal_type, goal, walkaway, counterparty_context, extracted_data }) {
+function buildSetupPrompt({
+  deal_type,
+  goal,
+  walkaway,
+  counterparty_context,
+  extracted_data,
+}) {
   return `You are a negotiation strategist. Analyze this deal and create a concise playbook.
 
 Deal type: ${deal_type}
@@ -32,8 +38,12 @@ User's goal: ${goal}
 Walkaway point: ${walkaway}
 Counterparty context: ${counterparty_context || "No specific context provided."}
 
-${extracted_data ? `Additional structured data from uploaded documents:
-${JSON.stringify(extracted_data, null, 2)}` : ""}
+${
+  extracted_data
+    ? `Additional structured data from uploaded documents:
+${JSON.stringify(extracted_data, null, 2)}`
+    : ""
+}
 
 Return ONLY a JSON object with this exact structure:
 {
@@ -194,7 +204,13 @@ Return only JSON. No preamble. No markdown fences.`;
  * Agent 4 — Simulator
  * Runs on demand. Simulates three negotiation paths.
  */
-function buildSimulatePrompt({ deal_type, goal, walkaway, playbook_summary, extracted_data }) {
+function buildSimulatePrompt({
+  deal_type,
+  goal,
+  walkaway,
+  playbook_summary,
+  extracted_data,
+}) {
   return `You are a negotiation outcome predictor. Given this deal context, simulate three negotiation paths.
 
 Deal type: ${deal_type}
@@ -202,8 +218,12 @@ Goal: ${goal}
 Walkaway: ${walkaway}
 Playbook: ${playbook_summary || "No playbook generated yet."}
 
-${extracted_data ? `Structured data from uploaded documents:
-${JSON.stringify(extracted_data, null, 2)}` : ""}
+${
+  extracted_data
+    ? `Structured data from uploaded documents:
+${JSON.stringify(extracted_data, null, 2)}`
+    : ""
+}
 
 Return ONLY a JSON object:
 {
@@ -244,10 +264,178 @@ Return ONLY a JSON object:
 Return only JSON. No preamble. No markdown fences.`;
 }
 
+function buildPracticeStartPrompt({
+  deal_type,
+  goal,
+  walkaway,
+  playbook_summary,
+  extracted_data,
+  counterpart_brief,
+}) {
+  return `You are roleplaying ONLY the counterpart in this training scenario.
+
+You are NOT the user.
+You must negotiate from the counterpart's side only.
+
+Scenario:
+- Deal type: ${deal_type}
+- User goal: ${goal}
+- User walkaway: ${walkaway}
+- User strategy context: ${playbook_summary || "No playbook summary available."}
+${extracted_data ? `- Background from uploaded documents: ${JSON.stringify(extracted_data)}` : ""}
+- Counterpart brief:
+${JSON.stringify(counterpart_brief, null, 2)}
+
+Rules:
+- Start the conversation naturally
+- Sound like a real human under business pressure
+- Introduce a negotiation anchor in the opening, and various different stratergies throughout the negotiation
+- Make the scenario realistic and slightly tense
+- Speak from the counterpart's perspective only
+- Never adopt the user's target, walkaway, or interests as your own
+- Do not say things that sound like the user arguing for themselves
+- Keep response under 35 words
+- Return ONLY the line of dialogue
+
+Return only text. No quotes. No labels.`;
+}
+
+function buildPracticeRespondPrompt({
+  deal_type,
+  goal,
+  walkaway,
+  playbook_summary,
+  extracted_data,
+  turns,
+  practice_turns,
+  counterpart_brief,
+}) {
+  const turnsFormatted = formatTurns(turns);
+
+  return `You are roleplaying ONLY the counterpart in a negotiation training scenario.
+
+Continue the negotiation realistically.
+
+Context:
+- Deal type: ${deal_type}
+- User goal: ${goal}
+- User walkaway: ${walkaway}
+- User strategy context: ${playbook_summary || "No playbook summary available."}
+- Current round: ${practice_turns}
+${extracted_data ? `- Document background: ${JSON.stringify(extracted_data)}` : ""}
+- Counterpart brief:
+${JSON.stringify(counterpart_brief, null, 2)}
+
+Conversation so far:
+${turnsFormatted}
+
+Rules:
+- Respond like a human, never like an AI assistant
+- Use realistic business language and clear details
+- Occasionally use negotiation tactics such as anchoring, urgency, pressure, or lowballing
+- Keep the environment realistic and pressure-based
+- Stay on the counterpart's side at all times
+- Never argue for the user's target as if it were your own target
+- Never say lines that make you sound like the candidate, buyer, or user defending themselves
+- If you make a concession, frame it clearly as your side moving, not as your own expectation increasing
+- Stay concise: 1-2 sentences, maximum 35 words
+- Do NOT explain your reasoning
+- Do NOT break character
+- Return ONLY the next line of dialogue
+
+Return only text. No quotes. No labels.`;
+}
+
+function buildPracticeCounterpartPrompt({
+  deal_type,
+  goal,
+  walkaway,
+  playbook_summary,
+  extracted_data,
+}) {
+  return `You are creating the OTHER SIDE of a negotiation training scenario.
+
+The user will practice against this counterpart.
+
+Scenario:
+- Deal type: ${deal_type}
+- User goal: ${goal}
+- User walkaway: ${walkaway}
+- User strategy context: ${playbook_summary || "No playbook summary available."}
+${extracted_data ? `- Background from uploaded documents: ${JSON.stringify(extracted_data)}` : ""}
+
+Create a realistic counterpart brief that OPPOSES or resists the user's goal while staying believable.
+
+Return ONLY JSON:
+{
+  "counterpart_role": "Who the counterpart is, e.g. hiring manager, procurement lead, buyer, seller",
+  "counterpart_side": "Short description of the side they represent",
+  "counterpart_goal": "What the counterpart wants instead of the user's goal",
+  "counterpart_constraints": ["constraint 1", "constraint 2"],
+  "counterpart_style": "How they negotiate under pressure",
+  "opening_anchor": "The first realistic anchor they should use",
+  "concession_guardrails": ["what they can move on", "what they should protect"]
+}
+
+Rules:
+- The counterpart must not share the user's incentives
+- The counterpart should feel realistic, professional, and slightly resistant
+- Keep all fields concise
+
+Return only JSON. No markdown. No preamble.`;
+}
+
+function buildPracticeReportPrompt({
+  deal_type,
+  goal,
+  walkaway,
+  playbook_summary,
+  transcript,
+  whispers,
+}) {
+  const fullTranscript = formatTurns(transcript);
+  const tacticsUsed = whispers
+    .filter((w) => w.tactic && w.tactic !== "unknown")
+    .map((w) => w.tactic);
+
+  return `You are an elite negotiation coach reviewing a practice drill.
+
+Analyze the simulated negotiation in detail and teach the user how to improve.
+
+Practice context:
+- Deal type: ${deal_type}
+- Goal: ${goal}
+- Walkaway: ${walkaway}
+- Strategy before practice: ${playbook_summary || "No playbook summary available."}
+- Counterparty tactics observed: ${tacticsUsed.length > 0 ? [...new Set(tacticsUsed)].join(", ") : "No clear tactics detected."}
+
+Transcript:
+${fullTranscript}
+
+Return ONLY JSON:
+{
+  "summary": "A detailed 4-6 sentence recap of what happened in the practice session.",
+  "strengths": ["specific thing the user did well", "specific thing the user did well"],
+  "mistakes": ["specific mistake and why it mattered", "specific mistake and why it mattered"],
+  "missed_opportunities": ["moment where the user could have improved outcome", "moment where the user could have improved outcome"],
+  "detected_tactics": ["tactic used by the AI counterpart and how it showed up", "another tactic and its impact"],
+  "improvement_plan": ["concrete improvement step", "concrete improvement step", "concrete improvement step"],
+  "drill_recommendation": "A focused next drill the user should practice.",
+  "negotiation_style": "2-3 sentences describing the user's current negotiation style and what to sharpen next.",
+  "practice_score": 78
+}
+
+Return only JSON. No markdown. No preamble.`;
+}
+
 module.exports = {
   buildSetupPrompt,
   buildWhisperPrompt,
   buildReportPrompt,
   buildSimulatePrompt,
+  buildPracticeStartPrompt,
+  buildPracticeRespondPrompt,
+  buildPracticeCounterpartPrompt,
+  buildPracticeReportPrompt,
   formatTurns,
 };
